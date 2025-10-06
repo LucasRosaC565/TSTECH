@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { CATEGORIES } from "@/lib/catalog";
 
 type ProductInput = { name: string; slug: string; image: string; price: string; category: string };
@@ -182,8 +183,7 @@ export default function AdminDashboard() {
                       .filter((url, idx, arr) => arr.indexOf(url) === idx)
                       .map((url, idx) => (
                         <div key={idx} className="relative h-16 w-24">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={url} alt="thumb" className="h-16 w-24 object-cover rounded border" />
+                          <Image src={url} alt="thumb" width={96} height={64} className="h-16 w-24 object-cover rounded border" />
                           <button
                             type="button"
                             aria-label="Remover imagem"
@@ -233,8 +233,7 @@ export default function AdminDashboard() {
             {products.map((p) => (
               <div key={p.slug} className="border rounded-xl overflow-hidden bg-white shadow-sm">
                 <div className="h-36 bg-gray-50 flex items-center justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.image} alt={p.name} className="max-h-full object-contain" />
+                  <Image src={p.image} alt={p.name} width={300} height={144} className="max-h-full object-contain" />
                 </div>
                 <div className="p-3">
                   <div className="flex items-center justify-between">
@@ -276,7 +275,7 @@ export default function AdminDashboard() {
               <div className="sm:col-span-2">
                 <span className="text-xs text-gray-600">Pré-visualização</span>
                 <div className="mt-2">
-                  <AdminArticlePreview title={aForm.title} image={aForm.image} excerpt={aForm.excerpt} content={aForm.content} />
+                  <AdminArticlePreview title={aForm.title} excerpt={aForm.excerpt} content={aForm.content} />
                 </div>
               </div>
               <div className="flex gap-3 sm:col-span-2">
@@ -396,9 +395,8 @@ function AdminProductPreview({ name, image, images, price, description }: { name
     <div className="rounded-2xl border shadow-sm bg-white p-5 w-full overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8 items-start w-full">
         <div className="h-[360px] rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden w-full">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           {image ? (
-            <img src={image} alt="Produto" className="max-h-full max-w-full object-contain" />
+            <Image src={image} alt="Produto" width={420} height={360} className="max-h-full max-w-full object-contain" />
           ) : (
             <span className="text-xs text-gray-400">Imagem do produto</span>
           )}
@@ -425,8 +423,7 @@ function AdminProductPreview({ name, image, images, price, description }: { name
                   .filter((url, idx, arr) => arr.indexOf(url) === idx)
                   .map((url, idx) => (
                   <div key={idx} className="relative h-16 w-24 flex-shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={url as string} alt="thumb" className="h-16 w-24 object-cover rounded border" />
+                    <Image src={url as string} alt="thumb" width={96} height={64} className="h-16 w-24 object-cover rounded border" />
                     {/* Remoção é controlada no formulário; apenas preview aqui */}
                   </div>
                 ))}
@@ -439,7 +436,7 @@ function AdminProductPreview({ name, image, images, price, description }: { name
   );
 }
 
-function AdminArticlePreview({ title, image, excerpt, content }: { title: string; image: string; excerpt: string; content: string }) {
+function AdminArticlePreview({ title, excerpt, content }: { title: string; excerpt: string; content: string }) {
   const date = new Date();
   return (
     <div className="rounded-2xl border shadow-sm overflow-hidden bg-gray-50 w-full">

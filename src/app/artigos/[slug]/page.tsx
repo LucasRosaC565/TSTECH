@@ -1,11 +1,19 @@
 import { prisma } from "@/lib/prisma";
 import type React from "react";
+import Image from "next/image";
+
+export const dynamicParams = true;
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  const items = await prisma.article.findMany({ select: { slug: true } });
-  return items.map((a) => ({ slug: a.slug }));
+  try {
+    const items = await prisma.article.findMany({ select: { slug: true } });
+    return items.map((a) => ({ slug: a.slug }));
+  } catch {
+    // Sem DB no build: não pré-renderizar artigos
+    return [];
+  }
 }
 
 export default async function ArtigoPage({ params }: Props) {
@@ -35,7 +43,7 @@ export default async function ArtigoPage({ params }: Props) {
           <div className="bg-white rounded-2xl shadow-sm border p-6 max-w-5xl">
             <h2 className="font-semibold text-[#3E515B] mb-4">{artigo.title}</h2>
             <ArticleBody content={String(artigo.content)} />
-            <span className="block text-xs text-gray-500 mt-4">{new Date(artigo.date as any).toLocaleDateString("pt-BR")}</span>
+            <span className="block text-xs text-gray-500 mt-4">{new Date(artigo.date as unknown as string).toLocaleDateString("pt-BR")}</span>
           </div>
         </div>
       </section>
@@ -46,11 +54,11 @@ export default async function ArtigoPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {outros.map((a) => (
               <a key={a.slug} href={`/artigos/${a.slug}`} className="bg-white rounded-2xl shadow-sm border overflow-hidden block">
-                <img src={a.image} alt={a.title} className="w-full h-[160px] object-cover" />
+                <Image src={a.image} alt={a.title} width={480} height={160} className="w-full h-[160px] object-cover" />
                 <div className="p-4">
                   <h4 className="font-medium text-[#3E515B] mb-2 line-clamp-2">{a.title}</h4>
                   <p className="text-sm text-[#646464] line-clamp-2">{a.excerpt}</p>
-                  <span className="block text-xs text-gray-500 mt-2">{new Date(a.date as any).toLocaleDateString("pt-BR")}</span>
+                  <span className="block text-xs text-gray-500 mt-2">{new Date(a.date as unknown as string).toLocaleDateString("pt-BR")}</span>
                 </div>
               </a>
             ))}

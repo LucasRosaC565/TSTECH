@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 
@@ -31,9 +32,11 @@ export default function RootLayout({
         <header className="border-b bg-[#FAFAFA] backdrop-blur">
           <div className="container flex items-center justify-between h-32">
             <Link href="/" className="flex items-center gap-2">
-              <img
+              <Image
                 src="/assets/Logo.png"
                 alt="TS Tech & Health"
+                width={160}
+                height={60}
                 className="h-26 w-auto"
               />
             </Link>
@@ -84,14 +87,14 @@ export default function RootLayout({
                   Fale conosco
                 </h4>
                 <div className="flex items-center gap-2">
-                <img src="/assets/zap.png" alt="Whatsapp" className="w-5 h-5" />
+                <Image src="/assets/zap.png" alt="Whatsapp" width={20} height={20} className="w-5 h-5" />
                 <span className="fluid-body text-black">
                   11 4367-3090 (Whatsapp)
                 </span>
                 </div>
   
                 <div className="flex items-center mt-2 gap-2">
-                <img src="/assets/email.png" alt="Email" className="w-5 h-5" />
+                <Image src="/assets/email.png" alt="Email" width={20} height={20} className="w-5 h-5" />
                 <span className="fluid-body text-black">
                   comercial@tsmedicalgroup.com.br
                 </span>

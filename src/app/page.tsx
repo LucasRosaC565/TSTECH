@@ -202,7 +202,7 @@ function Artigos() {
         const res = await fetch("/api/admin/articles", { cache: "no-store" });
         if (!res.ok) return;
         const data = await res.json();
-        const items = (data.items || []).map((a: any) => ({
+        const items = (data.items || []).map((a: { slug: string; title: string; excerpt: string; image: string; date: string }) => ({
           slug: a.slug,
           title: a.title,
           excerpt: a.excerpt,
@@ -291,7 +291,7 @@ function ProdutosDestaque() {
         const res = await fetch("/api/admin/products", { cache: "no-store" });
         if (!res.ok) return;
         const data = await res.json();
-        const items = (data.items || []).map((p: any) => ({ slug: p.slug, name: p.name, image: p.image, category: p.category }));
+        const items = (data.items || []).map((p: { slug: string; name: string; image: string; category: string }) => ({ slug: p.slug, name: p.name, image: p.image, category: p.category }));
         if (mounted) setProducts(items);
       } catch {}
     })();
@@ -308,7 +308,7 @@ function ProdutosDestaque() {
 
   const getWindow = () => {
     if (products.length === 0) return [] as typeof products;
-    const out: typeof products = [] as any;
+    const out: typeof products = [] as unknown as typeof products;
     for (let i = 0; i < Math.min(4, products.length); i++) {
       out.push(products[(start + i) % products.length]);
     }

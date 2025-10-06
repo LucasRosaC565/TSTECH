@@ -3,7 +3,15 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 export default async function ArtigosPage() {
-  const artigos = await prisma.article.findMany({ orderBy: { date: "desc" } });
+  let artigos: Array<{ slug: string; title: string; excerpt: string; image: string; date: Date }>; 
+  try {
+    artigos = await prisma.article.findMany({
+      orderBy: { date: "desc" },
+      select: { slug: true, title: true, excerpt: true, image: true, date: true },
+    });
+  } catch {
+    artigos = [];
+  }
   return (
     <main>
       <section className="hero-bg-artigos h-[28vw] min-h-[280px] flex items-center">

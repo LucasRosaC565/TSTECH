@@ -23,7 +23,7 @@ export type Product = {
   price?: string;
 };
 
-export function getProductsByCategory(categorySlug: string): Product[] {
+export function getProductsByCategory(_categorySlug: string): Product[] {
   // Placeholder de produtos até integração real
   const base: Product = {
     slug: "blue-foot-2-7mm",

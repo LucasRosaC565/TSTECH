@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -15,14 +16,14 @@ export async function PUT(req: Request, { params }: Params) {
   const body = await req.json();
   const { name, image, images, price, category, newSlug } = body || {};
   try {
-    const data: any = {
+    const data = ({
       name: name ?? undefined,
       image: image ?? undefined,
       images: images ?? undefined,
       price: price ?? undefined,
       category: category ?? undefined,
       slug: newSlug ?? undefined,
-    };
+    } as unknown) as Prisma.ProductUncheckedUpdateInput;
     const updated = await prisma.product.update({
       where: { slug },
       data,

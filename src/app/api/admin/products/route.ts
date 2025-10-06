@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
 export async function GET() {
   const items = await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
   const { name, slug, image, images, price, category } = body || {};
   if (!name || !slug || !image || !category) return new NextResponse("Campos obrigatórios ausentes", { status: 400 });
   try {
-    const data: any = { name, slug, image, images: images ?? null, price, category };
+    const data = { name, slug, image, images: images ?? null, price, category } as unknown as Prisma.ProductCreateInput;
     await prisma.product.create({ data });
     return NextResponse.json({ ok: true });
   } catch (e: unknown) {

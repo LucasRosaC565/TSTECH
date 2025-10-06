@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { Product } from "@/lib/catalog";
+type Product = { slug: string; name: string; image: string };
 
 type Props = {
   products: Product[];
@@ -66,9 +66,7 @@ export default function SearchBox({ products, categorySlug }: Props) {
                   </div>
                   <div className="truncate">
                     <div className="text-sm font-medium text-gray-800 truncate">{p.name}</div>
-                    {p.price && (
-                      <div className="text-xs text-gray-500 truncate">{p.price}</div>
-                    )}
+                    {/* preço removido */}
                   </div>
                   <span className="text-xs text-[#16514B] underline">Ver mais</span>
                 </Link>

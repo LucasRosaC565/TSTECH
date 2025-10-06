@@ -61,11 +61,12 @@ function Sobre() {
             },
           ].map((card) => (
             <div key={card.title} className="relative bg-white rounded-2xl shadow-sm border overflow-hidden">
-              <Image
+                <Image
                 src={card.img}
                 alt={card.title}
                 width={480}
                 height={320}
+                  sizes="(min-width: 1024px) 480px, 100vw"
                 className="w-full h-[220px] object-cover"
               />
               <Image
@@ -73,6 +74,7 @@ function Sobre() {
                 alt=""
                 width={40}
                 height={40}
+                sizes="40px"
                 className="absolute top-0 left-4 w-12 h-14"
               />
               <div className="p-5">

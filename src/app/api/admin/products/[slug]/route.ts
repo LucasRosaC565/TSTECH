@@ -14,13 +14,13 @@ export async function GET(_: Request, { params }: Params) {
 export async function PUT(req: Request, { params }: Params) {
   const { slug } = await params;
   const body = await req.json();
-  const { name, image, images, price, category, newSlug } = body || {};
+  const { name, image, images, description, category, newSlug } = body || {};
   try {
     const data = ({
       name: name ?? undefined,
       image: image ?? undefined,
       images: images ?? undefined,
-      price: price ?? undefined,
+      description: description ?? undefined,
       category: category ?? undefined,
       slug: newSlug ?? undefined,
     } as unknown) as Prisma.ProductUncheckedUpdateInput;

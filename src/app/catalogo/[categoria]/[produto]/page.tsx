@@ -1,21 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategory, getProduct, getProductsByCategory } from "@/lib/catalog";
+import { getCategory } from "@/lib/catalog";
+import { prisma } from "@/lib/prisma";
 
 type Props = { params: Promise<{ categoria: string; produto: string }> };
 
 export function generateStaticParams() {
-  const categorias = ["ortopedia", "infiltracao", "coluna-vertebral", "neurocirurgia"];
-  return categorias.flatMap((categoria) => {
-    const items = getProductsByCategory(categoria);
-    return items.slice(0, 3).map((p) => ({ categoria, produto: p.slug }));
-  });
+  // Sem pré-render dinâmico: deixar o Next gerar sob demanda
+  return [];
 }
 
 export default async function ProdutoPage({ params }: Props) {
   const { categoria, produto } = await params;
   const category = getCategory(categoria);
-  const product = getProduct(categoria, produto);
+  type ProductView = { slug: string; name: string; image: string; images: string[] | null; description?: string | null };
+  let product: ProductView | null = null;
+  try {
+    const db = await prisma.product.findUnique({
+      where: { slug: produto },
+      // client types podem estar desatualizados em build, então não selecionamos description tipada aqui
+      select: { slug: true, name: true, image: true, images: true },
+    });
+    product = db as unknown as ProductView;
+  } catch {
+    product = null;
+  }
 
   if (!category || !product) {
     return (
@@ -25,7 +34,7 @@ export default async function ProdutoPage({ params }: Props) {
     );
   }
 
-  const relacionados = getProductsByCategory(category.slug).slice(0, 4);
+  const relacionados: Array<{ slug: string; name: string; image: string; price: string | null }> = [];
 
   return (
     <main>
@@ -54,21 +63,15 @@ export default async function ProdutoPage({ params }: Props) {
                   </div>
                 </div>
               ) : (
-                <Image src={product.image} alt={product.name} width={520} height={360} className="rounded-lg bg-gray-50 w-full object-contain" />
+                <Image src={product.image} alt={product.name} width={520} height={360} sizes="(min-width: 1024px) 520px, 100vw" className="rounded-lg bg-gray-50 w-full object-contain" />
               )}
             </div>
             <div>
               <h2 className="fluid-label text-[#16514B] font-bold mb-3">{product.name}</h2>
-              <p className="text-[#646464] mb-4">
-                Produto exemplar para compor o layout. Depois integraremos com o
-                catálogo real e suas especificações técnicas.
-              </p>
-              <ul className="list-disc pl-5 text-[#646464] space-y-1 mb-6 text-sm">
-                <li>Haste de 2.7mm</li>
-                <li>Material de alta performance</li>
-                <li>Compatível com múltiplos sistemas</li>
-                <li>Registro e certificações aplicáveis</li>
-              </ul>
+              {product.description && (
+                <p className="text-[#646464] mb-4 whitespace-pre-wrap">{product.description}</p>
+              )}
+            
               <a className="btn-primary" href="#contato">Pedir orçamento</a>
             </div>
           </div>
@@ -76,7 +79,7 @@ export default async function ProdutoPage({ params }: Props) {
       </section>
       <section className="pb-14">
         <div className="container">
-          <h3 className="font-semibold mb-4">Produtos relacionados</h3>
+          <h3 className="font-semibold text-[#3E515B] mb-4">Produtos relacionados</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relacionados.map((p) => (
               <Link key={p.slug} href={`/catalogo/${category.slug}/${p.slug}`} className="bg-white rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
@@ -85,7 +88,7 @@ export default async function ProdutoPage({ params }: Props) {
                 </div>
                 <div className="px-4 pb-4 flex items-center justify-between">
                   <span className="font-semibold text-sm text-gray-800">{p.name}</span>
-                  <span className="text-xs text-gray-500">{p.price}</span>
+                  <span className="text-xs text-gray-500">Ver mais</span>
                 </div>
               </Link>
             ))}

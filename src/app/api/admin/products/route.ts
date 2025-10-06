@@ -3,16 +3,21 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 
 export async function GET() {
-  const items = await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
-  return NextResponse.json({ items });
+  try {
+    const items = await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
+    return NextResponse.json({ items });
+  } catch (e) {
+    // Sem tabela/banco: retorna lista vazia para não quebrar UI
+    return NextResponse.json({ items: [] });
+  }
 }
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { name, slug, image, images, price, category } = body || {};
+  const { name, slug, image, images, description, category } = body || {};
   if (!name || !slug || !image || !category) return new NextResponse("Campos obrigatórios ausentes", { status: 400 });
   try {
-    const data = { name, slug, image, images: images ?? null, price, category } as unknown as Prisma.ProductCreateInput;
+    const data = { name, slug, image, images: images ?? null, description, category } as unknown as Prisma.ProductCreateInput;
     await prisma.product.create({ data });
     return NextResponse.json({ ok: true });
   } catch (e: unknown) {

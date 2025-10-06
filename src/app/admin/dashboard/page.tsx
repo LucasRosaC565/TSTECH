@@ -6,7 +6,7 @@ import { CATEGORIES } from "@/lib/catalog";
 
 type ProductInput = { name: string; slug: string; image: string; price: string; category: string };
 type ArticleInput = { title: string; slug: string; image: string; excerpt: string; content: string };
-type ProductItem = { slug: string; name: string; image: string; price?: string | null; category: string; images?: string[] | null };
+type ProductItem = { slug: string; name: string; image: string; category: string; images?: string[] | null };
 type ArticleItem = { slug: string; title: string; image: string; excerpt: string; content: string };
 
 export default function AdminDashboard() {
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
 
   async function createProduct(e: React.FormEvent) {
     e.preventDefault();
-    const res = await fetch("/api/admin/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...pForm, images: pImages }) });
+    const res = await fetch("/api/admin/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...pForm, images: pImages, description: pDesc }) });
     if (res.ok) { setPForm({ name: "", slug: "", image: "", price: "", category: "" }); setPImages([]); setPDesc(""); loadData(); }
   }
   async function createArticle(e: React.FormEvent) {
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
   }
   async function startEditProduct(p: ProductItem) {
     setEditProductSlug(p.slug);
-    setPForm({ name: p.name, slug: p.slug, image: p.image, price: p.price ?? "", category: p.category });
+    setPForm({ name: p.name, slug: p.slug, image: p.image, price: "", category: p.category });
     setPImages(Array.isArray(p.images) ? p.images : []);
   }
   async function startEditArticle(a: ArticleItem) {
@@ -82,8 +82,8 @@ export default function AdminDashboard() {
   async function saveProductEdit(e: React.FormEvent) {
     e.preventDefault();
     if (!editProductSlug) return;
-    const { slug: newSlug, name, image, price, category } = pForm;
-    const res = await fetch(`/api/admin/products/${editProductSlug}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, image, price, category, images: pImages, newSlug }) });
+    const { slug: newSlug, name, image, category } = pForm;
+    const res = await fetch(`/api/admin/products/${editProductSlug}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, image, category, description: pDesc, images: pImages, newSlug }) });
     if (res.ok) { setEditProductSlug(null); setPForm({ name: "", slug: "", image: "", price: "", category: "" }); setPImages([]); loadData(); }
   }
   async function saveArticleEdit(e: React.FormEvent) {
@@ -98,7 +98,10 @@ export default function AdminDashboard() {
     const data = new FormData();
     data.append("file", file);
     const res = await fetch("/api/admin/upload", { method: "POST", body: data });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      // Em produção, fallback: não fazer upload, apenas retorna null
+      return null;
+    }
     const json = await res.json();
     return json.url as string;
   }
@@ -204,7 +207,7 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
-            <input className="input" type="number" step="0.01" inputMode="decimal" placeholder="Preço (R$)" value={pForm.price ?? ""} onChange={(e) => setPForm({ ...pForm, price: e.target.value })} />
+            {/* campo de preço removido */}
             <select className="input sm:col-span-2" value={pForm.category} onChange={(e) => setPForm({ ...pForm, category: e.target.value })} required>
               <option value="" disabled>Selecione a categoria</option>
               {CATEGORIES.map((c) => (
@@ -215,7 +218,7 @@ export default function AdminDashboard() {
             <div className="sm:col-span-2">
               <span className="text-xs text-gray-600">Pré-visualização</span>
               <div className="mt-2">
-                <AdminProductPreview name={pForm.name} image={pForm.image} images={pImages} price={pForm.price} description={pDesc} />
+                <AdminProductPreview name={pForm.name} image={pForm.image} images={pImages} description={pDesc} />
               </div>
             </div>
             <div className="flex gap-3 sm:col-span-2">
@@ -240,7 +243,7 @@ export default function AdminDashboard() {
                     <h4 className="font-semibold text-[#3E515B] truncate mr-2">{p.name}</h4>
                     <span className="text-xs px-2 py-0.5 rounded-full border text-[#16514B]">{p.category}</span>
                   </div>
-                  <div className="text-xs text-gray-600 mt-1">{p.price}</div>
+                  {/* preço removido */}
                   <div className="flex gap-3 mt-3">
                     <button className="btn-outline h-8 px-3" onClick={() => startEditProduct(p)}>Editar</button>
                     <button className="h-8 px-3 rounded-full bg-red-50 text-red-700 border border-red-200" onClick={() => deleteProduct(p.slug)}>Excluir</button>
@@ -314,7 +317,7 @@ export default function AdminDashboard() {
         <section className="bg-white text-black rounded-2xl border shadow-sm p-6">
           <h2 className="font-semibold mb-4">Importação em massa</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <BulkImport title="Produtos" type="products" templatePath="/templates/produtos.csv" description="CSV: name,slug,image,price,category" />
+            <BulkImport title="Produtos" type="products" templatePath="/templates/produtos.csv" description="CSV: name,slug,image,category" />
             <BulkImport title="Artigos" type="articles" templatePath="/templates/artigos.csv" description="CSV: title,slug,image,excerpt,content" />
           </div>
         </section>
@@ -384,13 +387,7 @@ function BulkImport({ title, type, templatePath, description }: { title: string;
 }
 
 
-function AdminProductPreview({ name, image, images, price, description }: { name: string; image: string; images: string[]; price?: string; description: string }) {
-  function formatPriceBR(value?: string) {
-    if (!value) return "";
-    const num = Number(String(value).replace(",", "."));
-    if (isNaN(num)) return value;
-    return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-  }
+function AdminProductPreview({ name, image, images, description }: { name: string; image: string; images: string[]; description: string }) {
   return (
     <div className="rounded-2xl border shadow-sm bg-white p-5 w-full overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8 items-start w-full">
@@ -412,7 +409,6 @@ function AdminProductPreview({ name, image, images, price, description }: { name
           )}
           <div className="flex items-center gap-4 flex-wrap">
             <a className="btn-primary cursor-default">Pedir orçamento</a>
-            {price && <div className="text-sm text-gray-500 mt-1">{formatPriceBR(price)}</div>}
           </div>
           {images?.length ? (
             <div className="mt-4">

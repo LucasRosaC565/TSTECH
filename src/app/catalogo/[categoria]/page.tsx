@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CATEGORIES, getCategory, getProductsByCategory } from "@/lib/catalog";
+import { CATEGORIES, getCategory } from "@/lib/catalog";
+import { prisma } from "@/lib/prisma";
 import SearchBox from "./SearchBox";
+export const revalidate = 60;
 import WhatsAppButton from "@/app/components/WhatsAppButton";
 
 type Props = { params: Promise<{ categoria: string }> };
@@ -18,7 +20,16 @@ export function generateStaticParams() {
 export default async function CategoriaPage({ params }: Props) {
   const { categoria } = await params;
   const category = getCategory(categoria);
-  const products = getProductsByCategory(categoria);
+  let products: Array<{ slug: string; name: string; image: string }>; 
+  try {
+    products = await prisma.product.findMany({
+      where: { category: categoria },
+      orderBy: { createdAt: "desc" },
+      select: { slug: true, name: true, image: true },
+    });
+  } catch {
+    products = [];
+  }
 
   if (!category) {
     return (
@@ -47,21 +58,23 @@ export default async function CategoriaPage({ params }: Props) {
           </div>
         </div>
       </section>
-      <section className="py-10">
-        <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-          {products.map((p) => (
-            <Link key={p.slug} href={`/catalogo/${category.slug}/${p.slug}`} className="bg-white rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-              <div className="">
-                <Image src={p.image} alt={p.name} width={400} height={300} className="w-full h-[300px] object-contain" />
-              </div>
-              <div className="px-4 pb-4 flex items-center justify-between">
-                <span className="font-bold fluid-label text-[#16514B]">{p.name}</span>
-                <span className="small underline text-[#646464]">{p.price}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {products.length > 0 && (
+        <section className="py-10">
+          <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+            {products.map((p) => (
+              <Link key={p.slug} href={`/catalogo/${category.slug}/${p.slug}`} className="bg-white rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div className="">
+                  <Image src={p.image} alt={p.name} width={400} height={300} sizes="(min-width: 1024px) 33vw, 100vw" className="w-full h-[300px] object-contain" />
+                </div>
+                <div className="px-4 pb-4 flex items-center justify-between">
+                  <span className="font-bold fluid-label text-[#16514B]">{p.name}</span>
+                  <span className="small underline text-[#646464]">Ver mais</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
       <section className="py-6">
         <div className="container">
           <h3 className="font-semibold text-[#3E515B] mb-4">Mais categorias</h3>

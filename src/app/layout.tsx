@@ -56,7 +56,7 @@ export default function RootLayout({
               <a href="#contato" className="hover:text-[#16514B]">
                 Contato
               </a>
-              <a href="#produtos" className="btn-primary h-10 px-5">
+              <a href="/catalogo" className="btn-primary h-10 px-5">
                 Produtos
               </a>
             </nav>
@@ -87,14 +87,14 @@ export default function RootLayout({
                   Fale conosco
                 </h4>
                 <div className="flex items-center gap-2">
-                <Image src="/assets/zap.png" alt="Whatsapp" width={20} height={20} className="w-5 h-5" />
+                <Image src="/assets/Zap.png" alt="Whatsapp" width={20} height={20} className="w-5 h-5" />
                 <span className="fluid-body text-black">
                   11 4367-3090 (Whatsapp)
                 </span>
                 </div>
   
                 <div className="flex items-center mt-2 gap-2">
-                <Image src="/assets/email.png" alt="Email" width={20} height={20} className="w-5 h-5" />
+                <Image src="/assets/Email.png" alt="Email" width={20} height={20} className="w-5 h-5" />
                 <span className="fluid-body text-black">
                   comercial@tsmedicalgroup.com.br
                 </span>

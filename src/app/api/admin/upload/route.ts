@@ -1,27 +1,23 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "node:fs/promises";
-import { join } from "node:path";
+import { prisma } from "@/lib/prisma";
 
-export async function POST(req: Request) {
-  const form = await req.formData();
+export async function POST(request: Request) {
+  const form = await request.formData();
   const file = form.get("file");
-  if (!(file instanceof File)) {
-    return new NextResponse("Arquivo não enviado", { status: 400 });
-  }
+  if (!(file instanceof File)) return new NextResponse("Arquivo ausente", { status: 400 });
+
+  const maxBytes = 4 * 1024 * 1024; // 4MB
+  if (file.size > maxBytes) return new NextResponse("Arquivo excede 4MB", { status: 413 });
 
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  const uploadsDir = join(process.cwd(), "public", "uploads");
-  await mkdir(uploadsDir, { recursive: true });
-
-  const timestamp = Date.now();
-  const safeName = (file.name || "upload").replace(/[^a-zA-Z0-9_.-]/g, "_");
-  const fileName = `${timestamp}_${safeName}`;
-  const targetPath = join(uploadsDir, fileName);
-  await writeFile(targetPath, buffer);
-
-  const url = `/uploads/${fileName}`;
-  return NextResponse.json({ url });
+  const saved = await prisma.storedFile.create({
+    data: { mime: file.type || "application/octet-stream", size: buffer.length, data: buffer },
+  });
+  const url = `/api/files/${saved.id}`;
+  return NextResponse.json({ url, id: saved.id });
 }
+
+// removed legacy filesystem upload implementation
 
 

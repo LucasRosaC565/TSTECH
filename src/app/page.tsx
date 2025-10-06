@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import WhatsAppButton from "./components/WhatsAppButton";
 
@@ -17,7 +18,7 @@ function Hero() {
             segurança.
           </p>
           <div className="flex gap-3">
-            <a href="/catalogo" className="btn-primary"> Confira o catálogo agora!</a>
+            <Link href="/catalogo" className="btn-primary"> Confira o catálogo agora!</Link>
           </div>
         </div>
       </div>
@@ -175,7 +176,7 @@ function Produtos() {
           ))}
         </div>
         <div className="text-center mt-8">
-          <a href="/catalogo" className="btn-primary">Veja nosso catálogo</a>
+          <Link href="/catalogo" className="btn-primary">Veja nosso catálogo</Link>
         </div>
       </div>
     </section>
@@ -218,7 +219,7 @@ function Artigos() {
       <div className="container">
         <div className="flex items-center justify-between mb-6">
           <h2 className="section-title fluid-display">Artigos</h2>
-          <a className="text-sm font-medium text-teal-800 hover:underline" href="/artigos">Ver mais Artigos</a>
+          <Link className="text-sm font-medium text-teal-800 hover:underline" href="/artigos">Ver mais Artigos</Link>
         </div>
         <div className="relative">
           <button
@@ -234,14 +235,14 @@ function Artigos() {
             className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-2 pr-1"
           >
             {articles.map((c) => (
-              <a key={c.slug} href={`/artigos/${c.slug}`} className="flex-shrink-0 w-[calc(100%_-_16px)] sm:w-[calc(50%_-_12px)] md:w-[calc(33.333%_-_16px)] bg-white rounded-xl shadow-sm border overflow-hidden snap-start">
+              <Link key={c.slug} href={`/artigos/${c.slug}`} className="flex-shrink-0 w-[calc(100%_-_16px)] sm:w-[calc(50%_-_12px)] md:w-[calc(33.333%_-_16px)] bg-white rounded-xl shadow-sm border overflow-hidden snap-start">
                 <Image src={c.image || "/assets/img-artigo.jpg"} alt={c.title} width={480} height={320} className="w-full h-[180px] object-cover" />
                 <div className="p-4">
                   <h3 className="font-semibold text-[#3E515B] mb-2">{c.title}</h3>
                   <p className="text-sm text-[#646464] mb-3 line-clamp-3">{c.excerpt}</p>
                   <span className="block text-xs text-gray-500">{new Date(c.date).toLocaleDateString("pt-BR")}</span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
           <button

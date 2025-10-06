@@ -28,9 +28,10 @@ export async function PUT(req: Request, { params }: Params) {
       data,
     });
     return NextResponse.json(updated);
-  } catch (e: any) {
-    if (e.code === "P2002") return new NextResponse("Slug já existe", { status: 409 });
-    if (e.code === "P2025") return new NextResponse("Não encontrado", { status: 404 });
+  } catch (e: unknown) {
+    const err = e as { code?: string };
+    if (err.code === "P2002") return new NextResponse("Slug já existe", { status: 409 });
+    if (err.code === "P2025") return new NextResponse("Não encontrado", { status: 404 });
     return new NextResponse("Erro ao atualizar", { status: 500 });
   }
 }
@@ -40,8 +41,9 @@ export async function DELETE(_: Request, { params }: Params) {
   try {
     await prisma.product.delete({ where: { slug } });
     return NextResponse.json({ ok: true });
-  } catch (e: any) {
-    if (e.code === "P2025") return new NextResponse("Não encontrado", { status: 404 });
+  } catch (e: unknown) {
+    const err = e as { code?: string };
+    if (err.code === "P2025") return new NextResponse("Não encontrado", { status: 404 });
     return new NextResponse("Erro ao excluir", { status: 500 });
   }
 }

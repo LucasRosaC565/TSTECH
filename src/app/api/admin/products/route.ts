@@ -14,8 +14,9 @@ export async function POST(req: Request) {
     const data: any = { name, slug, image, images: images ?? null, price, category };
     await prisma.product.create({ data });
     return NextResponse.json({ ok: true });
-  } catch (e: any) {
-    if (e.code === "P2002") return new NextResponse("Slug já existe", { status: 409 });
+  } catch (e: unknown) {
+    const err = e as { code?: string };
+    if (err.code === "P2002") return new NextResponse("Slug já existe", { status: 409 });
     return new NextResponse("Erro ao salvar", { status: 500 });
   }
 }

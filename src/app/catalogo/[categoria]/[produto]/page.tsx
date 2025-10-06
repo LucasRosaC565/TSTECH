@@ -46,7 +46,7 @@ export default async function ProdutoPage({ params }: Props) {
                     <Image src={product.image} alt={product.name} width={520} height={360} className="w-full h-full object-contain" />
                   </div>
                   <div className="flex gap-3 mt-3 overflow-x-auto no-scrollbar">
-                    {[product.image, ...((product as any).images as string[])].map((url, idx) => (
+                    {[product.image, ...((product as any).images as string[])] .map((url, idx) => (
                       <button key={idx} className="h-16 w-24 flex-shrink-0 rounded border bg-white" onClick={(e) => { e.preventDefault(); const img = e.currentTarget.querySelector('img') as HTMLImageElement | null; }}>
                         <img src={url} alt="thumb" className="h-full w-full object-cover rounded" />
                       </button>

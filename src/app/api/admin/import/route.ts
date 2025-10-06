@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     for (const r of required) if (!cols.includes(r)) return new NextResponse("CSV inválido: produtos requerem name,slug,image,category", { status: 400 });
     for (const l of lines) {
       const values = l.split(",").map((v) => v.trim());
-      const obj: any = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""]));
+      const obj = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""])) as Record<string, string>;
       if (!obj.name || !obj.slug || !obj.image || !obj.category) continue;
       try { await prisma.product.upsert({ where: { slug: obj.slug }, update: { name: obj.name, image: obj.image, price: obj.price || null, category: obj.category }, create: { name: obj.name, slug: obj.slug, image: obj.image, price: obj.price || null, category: obj.category } }); } catch {}
     }
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     for (const r of required) if (!cols.includes(r)) return new NextResponse("CSV inválido: artigos requerem title,slug,image,excerpt,content", { status: 400 });
     for (const l of lines) {
       const values = l.split(",").map((v) => v.trim());
-      const obj: any = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""]));
+      const obj = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""])) as Record<string, string>;
       if (!obj.title || !obj.slug || !obj.image || !obj.excerpt || !obj.content) continue;
       try { await prisma.article.upsert({ where: { slug: obj.slug }, update: { title: obj.title, image: obj.image, excerpt: obj.excerpt, content: obj.content }, create: { title: obj.title, slug: obj.slug, image: obj.image, excerpt: obj.excerpt, content: obj.content } }); } catch {}
     }

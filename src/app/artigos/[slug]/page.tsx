@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type React from "react";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -49,7 +50,7 @@ export default async function ArtigoPage({ params }: Props) {
                 <div className="p-4">
                   <h4 className="font-medium text-[#3E515B] mb-2 line-clamp-2">{a.title}</h4>
                   <p className="text-sm text-[#646464] line-clamp-2">{a.excerpt}</p>
-                  <span className="block text-xs text-gray-500 mt-2">{a.date}</span>
+                  <span className="block text-xs text-gray-500 mt-2">{new Date(a.date as any).toLocaleDateString("pt-BR")}</span>
                 </div>
               </a>
             ))}
@@ -83,7 +84,7 @@ function ArticleBody({ content }: { content: string }) {
     return italic;
   }
 
-  const elements = [] as JSX.Element[];
+  const elements: React.ReactElement[] = [];
   let listOpen = false;
   let listItems: string[] = [];
 

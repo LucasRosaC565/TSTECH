@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -29,23 +30,23 @@ export default function RootLayout({
       <body className={`${poppins.variable} ${geistMono.variable} antialiased`}>
         <header className="border-b bg-[#FAFAFA] backdrop-blur">
           <div className="container flex items-center justify-between h-32">
-            <a href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
               <img
                 src="/assets/Logo.png"
                 alt="TS Tech & Health"
                 className="h-26 w-auto"
               />
-            </a>
+            </Link>
             <nav className="hidden md:flex items-center gap-6 fluid-body font-medium text-[#646464]">
-              <a href="/" className="hover:text-[#16514B]">
+              <Link href="/" className="hover:text-[#16514B]">
                 Início
-              </a>
+              </Link>
               <a href="#sobre" className="hover:text-[#16514B]">
                 Sobre nós
               </a>
-              <a href="/artigos" className="hover:text-[#16514B]">
+              <Link href="/artigos" className="hover:text-[#16514B]">
                 Blog
-              </a>
+              </Link>
               <a href="#" className="hover:text-[#16514B]">
                 Convênios
               </a>

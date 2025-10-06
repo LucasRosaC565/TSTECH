@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     for (const r of required) if (!cols.includes(r)) return new NextResponse("CSV inválido: produtos requerem name,slug,image,category", { status: 400 });
     for (const l of lines) {
       const values = l.split(",").map((v) => v.trim());
-      const obj: any = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""]));
+      const obj = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""])) as Record<string, string>;
       if (!obj.name || !obj.slug || !obj.image || !obj.category) continue;
       let image = obj.image;
       if (!/^https?:\/\//i.test(image)) {
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     for (const r of required) if (!cols.includes(r)) return new NextResponse("CSV inválido: artigos requerem title,slug,image,excerpt,content", { status: 400 });
     for (const l of lines) {
       const values = l.split(",").map((v) => v.trim());
-      const obj: any = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""]));
+      const obj = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""])) as Record<string, string>;
       if (!obj.title || !obj.slug || !obj.image || !obj.excerpt || !obj.content) continue;
       let image = obj.image;
       if (!/^https?:\/\//i.test(image)) {

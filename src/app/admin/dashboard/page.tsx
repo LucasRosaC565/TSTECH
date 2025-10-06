@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { CATEGORIES } from "@/lib/catalog";
 
-type ProductInput = { name: string; slug: string; image: string; price?: string; category: string };
+type ProductInput = { name: string; slug: string; image: string; price: string; category: string };
 type ArticleInput = { title: string; slug: string; image: string; excerpt: string; content: string };
+type ProductItem = { slug: string; name: string; image: string; price?: string | null; category: string; images?: string[] | null };
+type ArticleItem = { slug: string; title: string; image: string; excerpt: string; content: string };
 
 export default function AdminDashboard() {
-  const [products, setProducts] = useState<any[]>([]);
-  const [articles, setArticles] = useState<any[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [pForm, setPForm] = useState<ProductInput>({ name: "", slug: "", image: "", price: "", category: "" });
   const [pDesc, setPDesc] = useState<string>("");
   const [aForm, setAForm] = useState<ArticleInput>({ title: "", slug: "", image: "", excerpt: "", content: "" });
@@ -29,8 +31,8 @@ export default function AdminDashboard() {
       fetch("/api/admin/articles", { cache: "no-store" }),
     ]);
     const [pr, ar] = await Promise.all([safeJson(prRes), safeJson(arRes)]);
-    setProducts(pr.items || []);
-    setArticles(ar.items || []);
+    setProducts((pr.items || []) as ProductItem[]);
+    setArticles((ar.items || []) as ArticleItem[]);
   }
 
   useEffect(() => { loadData(); }, []);
@@ -67,27 +69,27 @@ export default function AdminDashboard() {
     await fetch(`/api/admin/articles/${slug}`, { method: "DELETE" });
     loadData();
   }
-  async function startEditProduct(p: any) {
+  async function startEditProduct(p: ProductItem) {
     setEditProductSlug(p.slug);
-    setPForm({ name: p.name, slug: p.slug, image: p.image, price: p.price, category: p.category });
+    setPForm({ name: p.name, slug: p.slug, image: p.image, price: p.price ?? "", category: p.category });
     setPImages(Array.isArray(p.images) ? p.images : []);
   }
-  async function startEditArticle(a: any) {
+  async function startEditArticle(a: ArticleItem) {
     setEditArticleSlug(a.slug);
     setAForm({ title: a.title, slug: a.slug, image: a.image, excerpt: a.excerpt, content: a.content });
   }
   async function saveProductEdit(e: React.FormEvent) {
     e.preventDefault();
     if (!editProductSlug) return;
-    const { slug, ...rest } = pForm as any;
-    const res = await fetch(`/api/admin/products/${editProductSlug}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...rest, images: pImages, newSlug: slug }) });
+    const { slug: newSlug, name, image, price, category } = pForm;
+    const res = await fetch(`/api/admin/products/${editProductSlug}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, image, price, category, images: pImages, newSlug }) });
     if (res.ok) { setEditProductSlug(null); setPForm({ name: "", slug: "", image: "", price: "", category: "" }); setPImages([]); loadData(); }
   }
   async function saveArticleEdit(e: React.FormEvent) {
     e.preventDefault();
     if (!editArticleSlug) return;
-    const { slug, ...rest } = aForm as any;
-    const res = await fetch(`/api/admin/articles/${editArticleSlug}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...rest, newSlug: slug }) });
+    const { slug: newSlug, title, image, excerpt, content } = aForm;
+    const res = await fetch(`/api/admin/articles/${editArticleSlug}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title, image, excerpt, content, newSlug }) });
     if (res.ok) { setEditArticleSlug(null); setAForm({ title: "", slug: "", image: "", excerpt: "", content: "" }); loadData(); }
   }
 
@@ -202,7 +204,7 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
-            <input className="input" type="number" step="0.01" inputMode="decimal" placeholder="Preço (R$)" value={pForm.price as any} onChange={(e) => setPForm({ ...pForm, price: e.target.value })} />
+            <input className="input" type="number" step="0.01" inputMode="decimal" placeholder="Preço (R$)" value={pForm.price ?? ""} onChange={(e) => setPForm({ ...pForm, price: e.target.value })} />
             <select className="input sm:col-span-2" value={pForm.category} onChange={(e) => setPForm({ ...pForm, category: e.target.value })} required>
               <option value="" disabled>Selecione a categoria</option>
               {CATEGORIES.map((c) => (

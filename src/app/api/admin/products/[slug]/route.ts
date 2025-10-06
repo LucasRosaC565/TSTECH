@@ -15,16 +15,17 @@ export async function PUT(req: Request, { params }: Params) {
   const body = await req.json();
   const { name, image, images, price, category, newSlug } = body || {};
   try {
+    const data: any = {
+      name: name ?? undefined,
+      image: image ?? undefined,
+      images: images ?? undefined,
+      price: price ?? undefined,
+      category: category ?? undefined,
+      slug: newSlug ?? undefined,
+    };
     const updated = await prisma.product.update({
       where: { slug },
-      data: {
-        name: name ?? undefined,
-        image: image ?? undefined,
-        images: images ?? undefined,
-        price: price ?? undefined,
-        category: category ?? undefined,
-        slug: newSlug ?? undefined,
-      },
+      data,
     });
     return NextResponse.json(updated);
   } catch (e: any) {

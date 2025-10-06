@@ -11,7 +11,8 @@ export async function POST(req: Request) {
   const { name, slug, image, images, price, category } = body || {};
   if (!name || !slug || !image || !category) return new NextResponse("Campos obrigatórios ausentes", { status: 400 });
   try {
-    await prisma.product.create({ data: { name, slug, image, images: images ?? null, price, category } });
+    const data: any = { name, slug, image, images: images ?? null, price, category };
+    await prisma.product.create({ data });
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     if (e.code === "P2002") return new NextResponse("Slug já existe", { status: 409 });

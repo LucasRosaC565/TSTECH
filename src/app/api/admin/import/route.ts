@@ -27,10 +27,20 @@ export async function POST(request: Request) {
       const images = (obj.images || "").split(";").map((s) => s.trim()).filter(Boolean);
       const mappedImages = images.filter(Boolean);
       try {
+        const updateData: any = { name: obj.name, image: obj.image, category: obj.category };
+        const createData: any = { name: obj.name, slug: obj.slug, image: obj.image, category: obj.category };
+        if (typeof description === "string") {
+          updateData.description = description;
+          createData.description = description;
+        }
+        if (mappedImages.length) {
+          updateData.images = mappedImages;
+          createData.images = mappedImages;
+        }
         await prisma.product.upsert({
           where: { slug: obj.slug },
-          update: { name: obj.name, image: obj.image, category: obj.category, description, images: mappedImages.length ? mappedImages : undefined },
-          create: { name: obj.name, slug: obj.slug, image: obj.image, category: obj.category, description, images: mappedImages.length ? mappedImages : undefined },
+          update: updateData,
+          create: createData,
         });
       } catch {}
     }

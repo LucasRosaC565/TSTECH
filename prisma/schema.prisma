@@ -24,8 +24,8 @@ model Article {
   title     String
   slug      String   @unique
   image     String
-  excerpt   String
-  content   String   // markdown/text; paragrafos separados por \n\n
+  excerpt   String   @db.Text
+  content   String   @db.LongText // markdown/text; paragrafos separados por \n\n
   date      DateTime @default(now())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

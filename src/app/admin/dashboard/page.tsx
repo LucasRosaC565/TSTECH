@@ -142,7 +142,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="container mt-32 py-10">
+    <main className="container xl:mt-32 mt-20 py-10">
       <h1 className="fluid-h2 font-bold text-[#3E515B] mb-6">Admin</h1>
 
       <div className="bg-white rounded-full border shadow-sm inline-flex p-1 mb-6">

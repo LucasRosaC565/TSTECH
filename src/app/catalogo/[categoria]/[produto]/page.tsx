@@ -38,7 +38,7 @@ export default async function ProdutoPage({ params }: Props) {
 
   return (
     <main>
-      <section className="hero-bg-catalogo-pdt mt-32 h-[22vw] flex items-center">
+      <section className="hero-bg-catalogo-pdt xl:mt-32 mt-20 h-[22vw] flex items-center">
         <div className="container py-10">
           <h1 className="fluid-h2 font-bold text-[#3E515B]">
             <Link href="/catalogo" className="hover:underline">Catálogo</Link>
@@ -56,18 +56,18 @@ export default async function ProdutoPage({ params }: Props) {
               {Array.isArray(product.images) && product.images.length > 0 ? (
                 <div>
                   <div className="h-[360px] rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden">
-                    <Image src={product.image} alt={product.name} width={520} height={360} className="w-full h-full object-contain" />
+                    <Image src={product.image} alt={product.name} width={520} height={360} sizes="(min-width: 1024px) 520px, 100vw" loading="eager" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex gap-3 mt-3 overflow-x-auto no-scrollbar">
                     {[product.image, ...(product.images as string[])] .map((url, idx) => (
                       <button key={idx} className="h-16 w-24 flex-shrink-0 rounded border bg-white" onClick={(e) => { e.preventDefault(); }}>
-                        <img src={url} alt="thumb" className="h-full w-full object-cover rounded" />
+                        <Image src={url} alt="thumb" width={96} height={64} sizes="96px" loading="lazy" className="h-full w-full object-cover rounded" />
                       </button>
                     ))}
                   </div>
                 </div>
               ) : (
-                <Image src={product.image} alt={product.name} width={520} height={360} sizes="(min-width: 1024px) 520px, 100vw" className="rounded-lg bg-gray-50 w-full object-contain" />
+                <Image src={product.image} alt={product.name} width={520} height={360} sizes="(min-width: 1024px) 520px, 100vw" loading="eager" className="rounded-lg bg-gray-50 w-full object-contain" />
               )}
             </div>
             <div>

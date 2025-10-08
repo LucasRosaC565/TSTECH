@@ -20,6 +20,16 @@ export function generateStaticParams() {
 export default async function CategoriaPage({ params }: Props) {
   const { categoria } = await params;
   const category = getCategory(categoria);
+  const descriptions: Record<string, string> = {
+    "ortopedia":
+      "Produtos especializados para procedimentos ortopédicos minimamente invasivos, aplicáveis em diversas articulações do corpo, como joelho, ombro, cotovelo, pulso, tornozelo, quadril e articulações menores.",
+    "infiltracao":
+      "Produtos especializados para procedimentos de infiltração minimamente invasivos, aplicáveis em diversas articulações do corpo.",
+    "coluna-vertebral":
+      "Produtos especializados para procedimentos minimamente invasivos da coluna vertebral, aplicáveis em diferentes segmentos da coluna.",
+    "neurocirurgia":
+      "Produtos voltados a procedimentos neurocirúrgicos de alta complexidade, com técnicas minimamente invasivas.",
+  };
   let products: Array<{ slug: string; name: string; image: string }>; 
   try {
     products = await prisma.product.findMany({
@@ -41,7 +51,7 @@ export default async function CategoriaPage({ params }: Props) {
 
   return (
     <main>
-      <section className="hero-bg-catalogo-pdt mt-32 h-[22vw] flex items-end">
+      <section className="hero-bg-catalogo-pdt xl:mt-32 mt-20 md:h-[22vw] sm:h-[60vw] ctg-pdt-mobile h-[30vh] flex items-end">
         <div className="container py-10">
           <h1 className="fluid-h2 font-bold text-[#3E515B]">
             <Link href="/catalogo" className="hover:underline">Catálogo</Link>
@@ -49,7 +59,7 @@ export default async function CategoriaPage({ params }: Props) {
             <span>{category.name}</span>
           </h1>
           <p className="section-subtitle fluid-body text-[#646464] max-w-2xl mt-2">
-          Produtos especializados para procedimentos ortopédicos minimamente invasivos, aplicáveis em diversas articulações do corpo, como joelho, ombro, cotovelo, pulso, tornozelo, quadril e articulações menores.
+            {descriptions[category.slug]}
           </p>
         </div>
       </section>

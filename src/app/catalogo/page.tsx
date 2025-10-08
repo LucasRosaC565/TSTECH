@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/catalog";
 import WhatsAppButton from "../components/WhatsAppButton";
@@ -27,7 +26,7 @@ export default function CatalogoPage() {
   ];
   return (
     <main>
-      <section className="relative mt-32 flex items-center md:h-[25vw] h-[70vw]  hero-bg-catalogo">
+      <section className="relative xl:mt-32 mt-20 flex items-center md:h-[25vw] h-[70vw]  hero-bg-catalogo">
         <div className="container flex items-center py-10 lg:py-14">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
             <div>

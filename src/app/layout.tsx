@@ -31,14 +31,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} ${geistMono.variable} antialiased`}>
         <header className="header fixed top-0 w-full z-50 border-b bg-[#FAFAFA] backdrop-blur">
-          <div className="container flex items-center justify-between h-32">
+          <div className="container flex items-center justify-between xl:h-32 h-20">
             <Link href="/" className="flex items-center gap-2">
               <Image
                 src="/assets/Logo.svg"
                 alt="TS Tech & Health"
                 width={160}
                 height={60}
-                className="h-26 w-auto"
+                className="xl:h-26 h-20 w-auto"
               />
             </Link>
             <SiteNav />
@@ -46,46 +46,49 @@ export default function RootLayout({
         </header>
         {children}
         <footer id="contato" className="mt-20 justify-center border-t">
-          <div className="container flex flex-col items-center justify-center py-10 md:grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div className="flex flex-col items-center justify-center">
-              <div>
+          <div className="container items-center justify-center py-10 grid grid-cols-1 md:grid-cols-2 gap-4  md:gap-16">
+            <div className="flex items-center justify-center">
+              <div className="items-center justify-center">
                 <img
                   src="/assets/Logo.svg"
                   alt="TS Tech & Health"
                   className="h-36"
                 />
-                <h4 className="font-semibold fluid-body text-[#16514B] mb-2">Endereço</h4>
-                <p className="mt-4 fluid-body text-black">
-                  Rua Afonsina, 248 – Sala 03
-                  <br /> Rudge Ramos, São Bernardo do Campo – SP
-                  <br /> CEP: 09061-300
-                </p>
+                <div className="hidden md:block">
+                  <h4 className="font-semibold fluid-body text-[#16514B] mb-2">Endereço</h4>
+                  <p className="mt-4 fluid-body text-black">
+                    Rua Afonsina, 248 – Sala 03
+                    <br /> Rudge Ramos, São Bernardo do Campo – SP
+                    <br /> CEP: 09061-300
+                  </p>
+                </div>
               </div>
             </div>
 
             <div>
-              <div>
-                <h4 className="font-semibold fluid-body text-[#16514B] mb-2">
+              <div className="flex flex-col items-center justify-center md:items-stretch md:justify-start">
+                <h4 className="font-semibold fluid-body text-[#16514B] mb-2 text-center md:text-left">
                   Fale conosco
                 </h4>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col md:justify-start gap-2">
+                <div className="flex gap-2">
                 <Image src="/assets/Zap.png" alt="Whatsapp" width={20} height={20} className="w-5 h-5" />
                 <span className="fluid-body text-black">
                   11 4367-3090 (Whatsapp)
                 </span>
                 </div>
-  
-                <div className="flex items-center mt-2 gap-2">
+                <div className="flex gap-2">
                 <Image src="/assets/Email.png" alt="Email" width={20} height={20} className="w-5 h-5" />
                 <span className="fluid-body text-black">
                   comercial@tsmedicalgroup.com.br
                 </span>
                 </div>
+                </div>
               </div>
-              <h4 className="font-semibold mt-16 fluid-body text-[#16514B] mb-2">
+              <h4 className="font-semibold md:mt-16 mt-8 fluid-body text-[#16514B] mb-2 text-center md:text-left">
                 Redes sociais
               </h4>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="40"
@@ -125,6 +128,15 @@ export default function RootLayout({
                     fill="white"
                   />
                 </svg>
+              </div>
+              {/* Endereço (somente mobile) */}
+              <div className="md:hidden flex flex-col items-center justify-center mt-10 ">
+                <h4 className="font-semibold fluid-body text-[#16514B] mb-2">Endereço</h4>
+                <p className="mt-2 fluid-body text-black">
+                  Rua Afonsina, 248 – Sala 03
+                  <br /> Rudge Ramos, São Bernardo do Campo – SP
+                  <br /> CEP: 09061-300
+                </p>
               </div>
             </div>
           </div>

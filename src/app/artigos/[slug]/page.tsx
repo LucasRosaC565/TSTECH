@@ -33,8 +33,8 @@ export default async function ArtigoPage({ params }: Props) {
 
   return (
     <main>
-      <section className="hero-bg-artigo h-[28vw] min-h-[280px] flex items-center">
-        <div className="container py-8">
+      <section className="hero-bg-artigo xl:mt-32 mt-20 h-[28vw] min-h-[280px] flex items-center">
+        <div className="container">
           <p className="fluid-h2 font-bold text-[#3E515B] mb-1">
             <Link href="/artigos" className="hover:underline">Artigos</Link>
             <span className="opacity-60 px-2">›</span>

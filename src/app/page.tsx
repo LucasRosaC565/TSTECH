@@ -8,17 +8,17 @@ import WhatsAppButton from "./components/WhatsAppButton";
 
 function Hero() {
   return (
-    <section id="inicio" className="anchor-offset relative mt-32 overflow-hidden hero-bg">
+    <section id="inicio" className="anchor-offset relative xl:mt-32 mt-20 overflow-hidden hero-bg">
       <div className="container grid grid-cols-1 lg:grid-cols-2 items-center gap-12 py-12 lg:py-[12vw]">
-        <div className="z-10">
-          <h1 className="fluid-h2 font-bold text-[#3E515B] mb-4">
+        <div className="place-self-center text-center md:text-left z-10">
+          <h1 className="fluid-h2 font-bold md:max-w-full max-w-86 text-[#3E515B] mb-4">
             Soluções Minimamente Invasivas para Cirurgias de Alta Tecnologia
           </h1>
-          <p className="text-[#646464] mb-8 max-w-xl">
+          <p className="text-[#646464] mb-8 max-w-86 md:max-w-xl">
             Equipamentos Cirúrgicos de alta qualidade para máxima precisão e
             segurança.
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-3 justify-center md:justify-start">
             <Link href="/catalogo" className="btn-primary">
               {" "}
               Confira o catálogo agora!
@@ -34,13 +34,13 @@ function Sobre() {
   return (
     <section id="sobre" className="anchor-offset items-center flex justify-center py-20">
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-10 items-start">
+        <div className="grid grid-cols-1 place-items-center lg:place-items-start lg:grid-cols-[360px_1fr] gap-10 items-start">
           <h2 className="section-title fluid-display">
-            Sobre
-            <br />
+            Sobre <span className="hidden lg:hidden">Nós</span>
+            <br className="hidden lg:block" />
             Nós
           </h2>
-          <p className="section-subtitle text-left mb-12 max-w-9xl">
+          <p className="section-subtitle text-center lg:text-left mb-12 max-w-9xl">
             A TS Tech & Health atua desde 2021 no mercado de produtos médicos,
             oferecendo soluções inovadoras e de alta qualidade nas áreas de
             Coluna, Neurocirurgia, Ortopedia e Infiltração. Nosso compromisso é
@@ -119,7 +119,7 @@ function Tecnologia() {
       <div className="container gap-12 justify-center items-center flex lg:justify-start relative z-10 lg:pr-[740px] xl:pr-[840px] 2xl:pr-[900px]">
         <div className="max-w-[760px] text-center justify-center lg:text-left xl:max-w-[820px]">
           <div className="flex flex-col items-center lg:items-start justify-center">
-            <h2 className="section-title fluid-display mb-12">
+            <h2 className="section-title max-w-xl fluid-display mb-12">
               Tecnologia Avançada para Cirurgias Precisas
             </h2>
 
@@ -137,11 +137,11 @@ function Tecnologia() {
                 resultados para profissionais da saúde e seus pacientes.
               </strong>
             </p>
-            <ul className="grid grid-cols-2 sm:grid-cols-2 gap-x-[15vw] gap-3 lg:gap-4 mb-6">
+            <ul className="grid grid-cols-2 sm:grid-cols-2 gap-x-[20vw] gap-3 lg:gap-4 mb-6">
               {items.map((it) => (
-                <li key={it.label} className="flex items-center gap-3">
+                <li key={it.label} className="flex items-center gap-1 md:gap-3">
                   <Image src={it.icon} alt="" width={30} height={30} />
-                  <span className="text-[#16514B] text-nowrap fluid-label">
+                  <span className="text-[#16514B] text-nowrap small-tec font-bold">
                     {it.label}
                   </span>
                 </li>
@@ -274,7 +274,7 @@ function Artigos() {
   return (
     <section id="artigos" className="anchor-offset py-14 bg-white">
       <div className="container">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-16">
           <h2 className="section-title fluid-display">Artigos</h2>
           <Link
             className="text-sm font-medium text-teal-800 hover:underline"
@@ -323,7 +323,7 @@ function Artigos() {
                   className="w-full h-[180px] object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-semibold text-[#3E515B] mb-2">
+                  <h3 className="font-semibold text-[#3E515B] mb-8">
                     {c.title}
                   </h3>
                   <p className="text-sm text-[#646464] mb-3 line-clamp-3">
@@ -442,7 +442,7 @@ clone?.style.setProperty("transform", `translateX(${offset + totalWidth}px)`);
         {/* Faixa principal */}
         <div
           ref={containerRef}
-          className="flex gap-12 items-center whitespace-nowrap will-change-transform absolute left-0 top-0"
+          className="flex gap-4 items-center whitespace-nowrap will-change-transform absolute left-0 top-0"
         >
           {logos.map((src, idx) => (
             <div
@@ -457,7 +457,7 @@ clone?.style.setProperty("transform", `translateX(${offset + totalWidth}px)`);
         {/* Faixa clonada para continuidade */}
         <div
           ref={cloneRef}
-          className="flex gap-12 items-center whitespace-nowrap will-change-transform absolute left-0 top-0"
+          className="flex gap-4 items-center whitespace-nowrap will-change-transform absolute left-0 top-0"
         >
           {logos.map((src, idx) => (
             <div

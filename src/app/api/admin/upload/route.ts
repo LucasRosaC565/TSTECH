@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   const form = await request.formData();
@@ -12,14 +11,16 @@ export async function POST(request: Request) {
 
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  const uploadsDir = join(process.cwd(), "public", "uploads");
-  await mkdir(uploadsDir, { recursive: true });
-  const safeName = (file.name || "upload").replace(/[^a-zA-Z0-9_.-]/g, "_");
-  const fileName = `${Date.now()}_${safeName}`;
-  const targetPath = join(uploadsDir, fileName);
-  await writeFile(targetPath, buffer);
-  const url = `/uploads/${fileName}`;
-  return NextResponse.json({ url });
+  // Persistir no banco (compatível com Vercel/serverless)
+  try {
+    const saved = await (prisma as any).storedFile.create({
+      data: { mime: file.type || "application/octet-stream", size: buffer.length, data: buffer },
+    });
+    const url = `/api/files/${saved.id}`;
+    return NextResponse.json({ url });
+  } catch {
+    return new NextResponse("Falha ao salvar arquivo", { status: 500 });
+  }
 }
 
 // Armazenamento via filesystem para simplificar o deploy e compatibilizar com importações

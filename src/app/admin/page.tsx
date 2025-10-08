@@ -24,7 +24,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="min-h-[60vh] flex items-center justify-center py-16">
+    <main className="min-h-[60vh] mt-32 flex items-center justify-center py-16">
       <form onSubmit={handleSubmit} className="bg-white border shadow-sm rounded-2xl p-6 w-full max-w-md">
         <h1 className="fluid-h2 font-bold text-[#3E515B] mb-4">Área Administrativa</h1>
         <p className="text-sm text-gray-600 mb-6">Acesso restrito</p>

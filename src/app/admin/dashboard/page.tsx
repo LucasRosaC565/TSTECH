@@ -142,7 +142,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="container py-10">
+    <main className="container mt-32 py-10">
       <h1 className="fluid-h2 font-bold text-[#3E515B] mb-6">Admin</h1>
 
       <div className="bg-white rounded-full border shadow-sm inline-flex p-1 mb-6">
@@ -317,7 +317,7 @@ export default function AdminDashboard() {
         <section className="bg-white text-black rounded-2xl border shadow-sm p-6">
           <h2 className="font-semibold mb-4">Importação em massa</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <BulkImport title="Produtos" type="products" templatePath="/templates/produtos.csv" description="CSV: name,slug,image,category" />
+            <BulkImport title="Produtos" type="products" templatePath="/templates/produtos.csv" description="CSV: name,slug,image,category,description,images (images separadas por ';' e nomes de arquivo devem coincidir com os enviados)" />
             <BulkImport title="Artigos" type="articles" templatePath="/templates/artigos.csv" description="CSV: title,slug,image,excerpt,content" />
           </div>
         </section>
@@ -334,6 +334,7 @@ function BulkImport({ title, type, templatePath, description }: { title: string;
   const [fileName, setFileName] = useState("");
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [images, setImages] = useState<File[]>([]);
+  const [imageErrors, setImageErrors] = useState<string[]>([]);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (csvFile) {
@@ -362,12 +363,68 @@ function BulkImport({ title, type, templatePath, description }: { title: string;
   }
   function handleImages(ev: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(ev.target.files || []);
-    setImages(files as File[]);
+    if (!files.length) return;
+    const MAX_BYTES = 4 * 1024 * 1024;
+    const accepted: File[] = [];
+    const errors: string[] = [];
+    for (const f of files) {
+      if (!f.type || !f.type.startsWith("image/")) {
+        errors.push(`${f.name}: formato inválido (apenas imagens)`);
+        continue;
+      }
+      if (f.size > MAX_BYTES) {
+        errors.push(`${f.name}: excede 4MB`);
+        continue;
+      }
+      if (/[^a-zA-Z0-9_.-]/.test(f.name)) {
+        errors.push(`${f.name}: nome contém espaços/acentos; será normalizado no servidor`);
+      }
+      accepted.push(f);
+    }
+    setImages((prev) => [...prev, ...accepted]);
+    setImageErrors(errors);
   }
   return (
     <form onSubmit={submit} className="space-y-3">
       <h3 className="font-medium">{title}</h3>
       <p className="text-xs text-gray-600">{description}</p>
+      {type === "products" && (
+        <div className="text-xs text-gray-700 bg-gray-50 border rounded p-3 space-y-1">
+          <div><strong>Como preencher:</strong></div>
+          <div>- <code>name</code>: Nome do produto.</div>
+          <div>- <code>slug</code>: Identificador único (geralmente automático do nome, em minúsculas e hífens).</div>
+          <div>- <code>image</code>: URL completa ou nome do arquivo da imagem principal (se enviar no campo abaixo).</div>
+          <div>- <code>category</code>: slug da categoria (ex.: ortopedia, infiltracao, coluna-vertebral, neurocirurgia).</div>
+          <div>- <code>description</code>: Texto descritivo (pode usar quebras de linha \n\n; no CSV, evite vírgulas ou envolva em aspas).</div>
+          <div>- <code>images</code>: Lista de imagens extras separadas por ponto e vírgula <code>;</code> (ex.: <code>foto1.jpg;foto2.jpg</code>).</div>
+          <div className="mt-2"><strong>Importando imagens:</strong> Anexe os arquivos em “Selecionar imagens (múltiplas)”. Os nomes devem corresponder aos informados nas colunas <code>image</code> e/ou <code>images</code>. Se usar URL (http/https), não precisa anexar o arquivo.</div>
+          <div className="text-[11px] text-gray-600 mt-1">Limite por imagem: 4MB. Formatos recomendados: JPG/PNG. Use nomes sem espaços/acentos (ex.: <code>foto_01.jpg</code>).</div>
+        </div>
+      )}
+      {type === "articles" && (
+        <div className="text-xs text-gray-700 bg-gray-50 border rounded p-3 space-y-1">
+          <div><strong>Como preencher:</strong></div>
+          <div>- <code>title</code>, <code>slug</code>, <code>image</code>, <code>excerpt</code>, <code>content</code> são obrigatórios.</div>
+          <div>- <code>content</code>: separe parágrafos com linha em branco (\n\n). Suporta <code>**negrito**</code>, <code>*itálico*</code>, <code>## Subtítulo</code>, <code># Título</code> e listas com linhas iniciadas por <code>- </code>.</div>
+          <div className="mt-2"><strong>Importando imagens:</strong> Você pode usar URL completa em <code>image</code> ou anexar a imagem e referenciar pelo nome do arquivo.</div>
+          <div className="mt-2"><strong>Exemplo de conteúdo:</strong></div>
+          <pre className="whitespace-pre-wrap bg-white border rounded p-2 text-[11px] leading-5">
+{`A tendinite no ombro é uma inflamação nos tendões, muitas vezes causada por esforço repetitivo.
+
+**Sintomas comuns** incluem dor ao levantar o braço, fraqueza e sensibilidade local.
+
+- Repouso relativo
+- Gelo por 15–20 minutos
+- Alongamentos guiados por profissional
+- Avaliação médica quando a dor persiste
+
+## Quando procurar ajuda
+Se houver **dor intensa**, formigamentos, perda de força ou alteração do controle esfincteriano, busque atendimento especializado.`}
+          </pre>
+          <div className="mt-2">Baixe também o template pronto: <a className="underline" href="/templates/artigos.csv" download>artigos.csv</a></div>
+          <div className="text-[11px] text-gray-600 mt-1">Limite por imagem: 4MB. Formatos recomendados: JPG/PNG. Use nomes sem espaços/acentos (ex.: <code>capa_artigo.jpg</code>).</div>
+        </div>
+      )}
       <div className="flex items-center gap-3">
         <a href={templatePath} download className="btn-outline">Baixar template</a>
         <label className="btn-outline cursor-pointer">
@@ -380,6 +437,18 @@ function BulkImport({ title, type, templatePath, description }: { title: string;
         </label>
         {fileName && <span className="text-xs text-gray-600">{fileName}</span>}
       </div>
+      {images.length > 0 && (
+        <div className="text-[11px] text-gray-600">Imagens selecionadas: {images.length}</div>
+      )}
+      {imageErrors.length > 0 && (
+        <div className="text-[11px] text-red-600">
+          <ul className="list-disc pl-5 space-y-0.5">
+            {imageErrors.map((e, i) => (
+              <li key={i}>{e}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <textarea className="input w-full min-h-32" placeholder="Ou cole o CSV aqui" value={text} onChange={(e) => setText(e.target.value)} />
       <button className="btn-primary">Importar {title}</button>
     </form>

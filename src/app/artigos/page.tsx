@@ -14,7 +14,7 @@ export default async function ArtigosPage() {
   }
   return (
     <main>
-      <section className="hero-bg-artigos h-[28vw] min-h-[280px] flex items-center">
+      <section className="hero-bg-artigos mt-32 h-[28vw] min-h-[280px] flex items-center">
         <div className="container py-8">
           <h1 className="fluid-h2 font-bold text-[#3E515B]">Artigos</h1>
         </div>

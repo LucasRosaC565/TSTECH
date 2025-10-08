@@ -27,7 +27,7 @@ export default function CatalogoPage() {
   ];
   return (
     <main>
-      <section className="relative flex items-center md:h-[30vw] h-[70vw]  hero-bg-catalogo">
+      <section className="relative mt-32 flex items-center md:h-[25vw] h-[70vw]  hero-bg-catalogo">
         <div className="container flex items-center py-10 lg:py-14">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
             <div>
@@ -48,7 +48,7 @@ export default function CatalogoPage() {
             <Link
               key={c.slug}
               href={`/catalogo/${c.slug}`}
-              className="group relative overflow-hidden rounded-3xl p-5 text-white lg:w-[25vw] lg:h-[20vw] md:w-[40vw] md:h-[30vw] w-[60vw] h-[50vw] flex flex-col justify-end"
+              className="group relative overflow-hidden rounded-3xl p-5 text-white lg:w-[20vw] lg:h-[18vw] md:w-[40vw] md:h-[30vw] w-[60vw] h-[50vw] flex flex-col justify-end"
               style={{
                 background:
                   `linear-gradient(182deg, rgba(0, 0, 0, 0.00) -4.59%, rgba(0, 75, 59, 0.90) 77.24%), url(${c.img}) top / cover no-repeat`,

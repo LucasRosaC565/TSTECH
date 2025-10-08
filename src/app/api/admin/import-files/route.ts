@@ -37,13 +37,21 @@ export async function POST(request: Request) {
   const cols = header.split(",").map((c) => c.trim());
 
   if (type === "products") {
-    const required = ["name","slug","image","category"]; // price é opcional
+    // header esperado: name,slug,image,category,description,images
+    const required = ["name","slug","image","category"]; // description e images são opcionais
     for (const r of required) if (!cols.includes(r)) return new NextResponse("CSV inválido: produtos requerem name,slug,image,category", { status: 400 });
     for (const l of lines) {
       const values = l.split(",").map((v) => v.trim());
       const obj = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""])) as Record<string, string>;
       if (!obj.name || !obj.slug || !obj.image || !obj.category) continue;
       let image = obj.image;
+      const description = (obj.description || "").trim() || undefined;
+      const images = (obj.images || "").split(";").map((s) => s.trim()).filter(Boolean);
+      const mappedImages = images.map((n) => {
+        if (/^https?:\/\//i.test(n)) return n;
+        const safe = n.replace(/[^a-zA-Z0-9_.-]/g, "_");
+        return imageUrlByName.get(safe) || n;
+      });
       if (!/^https?:\/\//i.test(image)) {
         const safe = image.replace(/[^a-zA-Z0-9_.-]/g, "_");
         image = imageUrlByName.get(safe) || image;
@@ -51,8 +59,8 @@ export async function POST(request: Request) {
       try {
         await prisma.product.upsert({
           where: { slug: obj.slug },
-          update: { name: obj.name, image, price: obj.price || null, category: obj.category },
-          create: { name: obj.name, slug: obj.slug, image, price: obj.price || null, category: obj.category },
+          update: { name: obj.name, image, category: obj.category, description, images: mappedImages.length ? mappedImages : undefined },
+          create: { name: obj.name, slug: obj.slug, image, category: obj.category, description, images: mappedImages.length ? mappedImages : undefined },
         });
       } catch {}
     }

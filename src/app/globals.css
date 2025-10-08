@@ -38,11 +38,16 @@ html, body {
 }
 
 .container {
-  @apply mx-auto -mx-[10vw] max-w-7xl px-4 sm:px-6 lg:px-8;
+  @apply mx-auto -mx-[10vw] max-w-7xl px-10 sm:px-20 lg:px-20;
 }
 
 /* Botões padrão com o gradiente informado */
 .btn-primary {
+  @apply inline-flex items-center justify-center rounded-full text-white font-medium shadow-sm transition-colors duration-200 px-5 py-2.5;
+  background-image: linear-gradient(90deg, #009E7C 0%, #16514B 100%);
+}
+
+.btn-nav {
   @apply inline-flex items-center justify-center rounded-full text-white font-medium shadow-sm transition-colors duration-200 px-5 py-2.5;
   background-image: linear-gradient(90deg, #009E7C 0%, #16514B 100%);
 }
@@ -112,19 +117,45 @@ html, body {
   background: linear-gradient(270deg, rgba(62, 81, 91, 0.00) -2.07%, #F5F5F5 83.1%), url('/assets/bg-art-selecionado.jpg') center / cover no-repeat;
 }
 
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
 
+.animate-marquee {
+  display: flex;
+  animation: marquee 40s linear infinite;
+}
 
+/* Scroll reveal for sections */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 600ms ease; will-change: opacity, transform; }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
 
+/* Smooth scroll for in-page anchors */
+html { scroll-behavior: smooth; }
 
+:root { --anchor-offset: 140px; }
+.anchor-offset { scroll-margin-top: var(--anchor-offset); }
+
+/* Destaque do link ativo no menu superior */
+.links.active {
+  color: #16514B;
+  text-decoration: underline;
+}
 
 /* Tipografia fluida */
 .fluid-display {
-  font-size: clamp(30px, 4.8vw, 48px);
+  font-size: clamp(30px, 4.8vw, 38px);
   line-height: 1.1;
 }
 
 .fluid-h2 {
-  font-size: clamp(29px, 2.8vw, 38px);
+  font-size: clamp(29px, 2.9vw, 32px);
   line-height: 1.2;
 }
 

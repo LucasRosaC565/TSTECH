@@ -16,14 +16,23 @@ export async function POST(request: Request) {
   const cols = header.split(",").map((c) => c.trim());
 
   if (type === "products") {
-    // header esperado: name,slug,image,price,category
-    const required = ["name","slug","image","category"];
+    // header esperado: name,slug,image,category,description,images
+    const required = ["name","slug","image","category"]; // description e images são opcionais
     for (const r of required) if (!cols.includes(r)) return new NextResponse("CSV inválido: produtos requerem name,slug,image,category", { status: 400 });
     for (const l of lines) {
       const values = l.split(",").map((v) => v.trim());
       const obj = Object.fromEntries(cols.map((c, i) => [c, values[i] ?? ""])) as Record<string, string>;
       if (!obj.name || !obj.slug || !obj.image || !obj.category) continue;
-      try { await prisma.product.upsert({ where: { slug: obj.slug }, update: { name: obj.name, image: obj.image, price: obj.price || null, category: obj.category }, create: { name: obj.name, slug: obj.slug, image: obj.image, price: obj.price || null, category: obj.category } }); } catch {}
+      const description = (obj.description || "").trim() || undefined;
+      const images = (obj.images || "").split(";").map((s) => s.trim()).filter(Boolean);
+      const mappedImages = images.filter(Boolean);
+      try {
+        await prisma.product.upsert({
+          where: { slug: obj.slug },
+          update: { name: obj.name, image: obj.image, category: obj.category, description, images: mappedImages.length ? mappedImages : undefined },
+          create: { name: obj.name, slug: obj.slug, image: obj.image, category: obj.category, description, images: mappedImages.length ? mappedImages : undefined },
+        });
+      } catch {}
     }
     return NextResponse.json({ ok: true });
   }

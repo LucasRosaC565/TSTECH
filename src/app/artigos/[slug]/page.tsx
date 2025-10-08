@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export const dynamicParams = true;
 
@@ -34,7 +35,11 @@ export default async function ArtigoPage({ params }: Props) {
     <main>
       <section className="hero-bg-artigo h-[28vw] min-h-[280px] flex items-center">
         <div className="container py-8">
-          <p className="fluid-h2 font-bold text-[#3E515B] mb-1">Artigos</p>
+          <p className="fluid-h2 font-bold text-[#3E515B] mb-1">
+            <Link href="/artigos" className="hover:underline">Artigos</Link>
+            <span className="opacity-60 px-2">›</span>
+            <span>{artigo.title}</span>
+          </p>
         </div>
       </section>
 
@@ -53,14 +58,14 @@ export default async function ArtigoPage({ params }: Props) {
           <h3 className="font-semibold text-[#3E515B] mb-4">Outros Artigos</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {outros.map((a) => (
-              <a key={a.slug} href={`/artigos/${a.slug}`} className="bg-white rounded-2xl shadow-sm border overflow-hidden block">
+              <Link key={a.slug} href={`/artigos/${a.slug}`} className="bg-white rounded-2xl shadow-sm border overflow-hidden block">
                 <Image src={a.image} alt={a.title} width={480} height={160} className="w-full h-[160px] object-cover" />
                 <div className="p-4">
                   <h4 className="font-medium text-[#3E515B] mb-2 line-clamp-2">{a.title}</h4>
                   <p className="text-sm text-[#646464] line-clamp-2">{a.excerpt}</p>
                   <span className="block text-xs text-gray-500 mt-2">{new Date(a.date as unknown as string).toLocaleDateString("pt-BR")}</span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

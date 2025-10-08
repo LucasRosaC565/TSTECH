@@ -1,4 +1,4 @@
-name,slug,image,price,category
-Blue Foot 2.7mm,blue-foot-2-7mm,/assets/Produto.png,Ver mais,ortopedia
-Parafuso Canulado 4.0mm,parafuso-canulado-4-0mm,/assets/Produto.png,Consultar,ortopedia
+name,slug,image,category,description,images
+Blue Foot 2.7mm,blue-foot-2-7mm,Produto.png,ortopedia,"Sistema de fixação óssea indicado para procedimentos de ortopedia.","galeria1.jpg;galeria2.jpg"
+Parafuso Canulado 4.0mm,parafuso-canulado-4-0mm,Produto.png,ortopedia,"Parafuso canulado para estabilização com alta precisão.",
 

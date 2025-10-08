@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import SiteNav from "./components/SiteNav";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -29,37 +30,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${geistMono.variable} antialiased`}>
-        <header className="border-b bg-[#FAFAFA] backdrop-blur">
+        <header className="header fixed top-0 w-full z-50 border-b bg-[#FAFAFA] backdrop-blur">
           <div className="container flex items-center justify-between h-32">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/assets/Logo.png"
+                src="/assets/Logo.svg"
                 alt="TS Tech & Health"
                 width={160}
                 height={60}
                 className="h-26 w-auto"
               />
             </Link>
-            <nav className="hidden md:flex items-center gap-6 fluid-body font-medium text-[#646464]">
-              <Link href="/" className="hover:text-[#16514B]">
-                Início
-              </Link>
-              <a href="#sobre" className="hover:text-[#16514B]">
-                Sobre nós
-              </a>
-              <Link href="/artigos" className="hover:text-[#16514B]">
-                Blog
-              </Link>
-              <a href="#" className="hover:text-[#16514B]">
-                Convênios
-              </a>
-              <a href="#contato" className="hover:text-[#16514B]">
-                Contato
-              </a>
-              <a href="/catalogo" className="btn-primary h-10 px-5">
-                Produtos
-              </a>
-            </nav>
+            <SiteNav />
           </div>
         </header>
         {children}
@@ -68,7 +50,7 @@ export default function RootLayout({
             <div className="flex flex-col items-center justify-center">
               <div>
                 <img
-                  src="/assets/Logo.png"
+                  src="/assets/Logo.svg"
                   alt="TS Tech & Health"
                   className="h-36"
                 />

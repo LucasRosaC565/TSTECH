@@ -41,10 +41,12 @@ export default async function CategoriaPage({ params }: Props) {
 
   return (
     <main>
-      <section className="hero-bg-catalogo-pdt h-[25vw] flex items-end">
+      <section className="hero-bg-catalogo-pdt mt-32 h-[22vw] flex items-end">
         <div className="container py-10">
           <h1 className="fluid-h2 font-bold text-[#3E515B]">
-            Catálogo › {category.name}
+            <Link href="/catalogo" className="hover:underline">Catálogo</Link>
+            <span className="opacity-60 px-2">›</span>
+            <span>{category.name}</span>
           </h1>
           <p className="section-subtitle fluid-body text-[#646464] max-w-2xl mt-2">
           Produtos especializados para procedimentos ortopédicos minimamente invasivos, aplicáveis em diversas articulações do corpo, como joelho, ombro, cotovelo, pulso, tornozelo, quadril e articulações menores.

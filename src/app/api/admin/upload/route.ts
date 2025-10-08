@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const buffer = Buffer.from(arrayBuffer);
   // Persistir no banco (compatível com Vercel/serverless)
   try {
-    const saved = await (prisma as any).storedFile.create({
+    const saved = await prisma.storedFile.create({
       data: { mime: file.type || "application/octet-stream", size: buffer.length, data: buffer },
     });
     const url = `/api/files/${saved.id}`;

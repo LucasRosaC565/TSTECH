@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 
 export async function POST(request: Request) {
   const form = await request.formData();
@@ -11,13 +12,16 @@ export async function POST(request: Request) {
 
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  const saved = await prisma.storedFile.create({
-    data: { mime: file.type || "application/octet-stream", size: buffer.length, data: buffer },
-  });
-  const url = `/api/files/${saved.id}`;
-  return NextResponse.json({ url, id: saved.id });
+  const uploadsDir = join(process.cwd(), "public", "uploads");
+  await mkdir(uploadsDir, { recursive: true });
+  const safeName = (file.name || "upload").replace(/[^a-zA-Z0-9_.-]/g, "_");
+  const fileName = `${Date.now()}_${safeName}`;
+  const targetPath = join(uploadsDir, fileName);
+  await writeFile(targetPath, buffer);
+  const url = `/uploads/${fileName}`;
+  return NextResponse.json({ url });
 }
 
-// removed legacy filesystem upload implementation
+// Armazenamento via filesystem para simplificar o deploy e compatibilizar com importações
 
 

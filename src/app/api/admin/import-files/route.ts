@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -57,15 +58,15 @@ export async function POST(request: Request) {
         image = imageUrlByName.get(safe) || image;
       }
       try {
-        const updateData: any = { name: obj.name, image, category: obj.category };
-        const createData: any = { name: obj.name, slug: obj.slug, image, category: obj.category };
+        const updateData: Prisma.ProductUpdateInput = { name: obj.name, image, category: obj.category };
+        const createData: Prisma.ProductCreateInput = { name: obj.name, slug: obj.slug, image, category: obj.category };
         if (typeof description === "string") {
           updateData.description = description;
           createData.description = description;
         }
         if (mappedImages.length) {
-          updateData.images = mappedImages;
-          createData.images = mappedImages;
+          updateData.images = mappedImages as unknown as Prisma.InputJsonValue;
+          createData.images = mappedImages as unknown as Prisma.InputJsonValue;
         }
         await prisma.product.upsert({
           where: { slug: obj.slug },

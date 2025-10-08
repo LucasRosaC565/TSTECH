@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const items = await prisma.article.findMany({ orderBy: { date: "desc" } });
     return NextResponse.json({ items });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ items: [] });
   }
 }

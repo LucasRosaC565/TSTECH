@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
 // Espera CSV em texto puro no body. Query param type=products|articles
 export async function POST(request: Request) {
@@ -27,15 +28,16 @@ export async function POST(request: Request) {
       const images = (obj.images || "").split(";").map((s) => s.trim()).filter(Boolean);
       const mappedImages = images.filter(Boolean);
       try {
-        const updateData: any = { name: obj.name, image: obj.image, category: obj.category };
-        const createData: any = { name: obj.name, slug: obj.slug, image: obj.image, category: obj.category };
+        const updateData: Prisma.ProductUpdateInput = { name: obj.name, image: obj.image, category: obj.category };
+        const createData: Prisma.ProductCreateInput = { name: obj.name, slug: obj.slug, image: obj.image, category: obj.category };
         if (typeof description === "string") {
           updateData.description = description;
           createData.description = description;
         }
         if (mappedImages.length) {
-          updateData.images = mappedImages;
-          createData.images = mappedImages;
+          // Prisma JSON aceita array de strings como InputJsonValue
+          updateData.images = mappedImages as unknown as Prisma.InputJsonValue;
+          createData.images = mappedImages as unknown as Prisma.InputJsonValue;
         }
         await prisma.product.upsert({
           where: { slug: obj.slug },

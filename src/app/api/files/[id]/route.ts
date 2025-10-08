@@ -8,7 +8,8 @@ export async function GET(_: Request, { params }: Params) {
   const fileId = Number(id);
   if (!Number.isFinite(fileId)) return new NextResponse("Invalid id", { status: 400 });
   try {
-    const row = await prisma.storedFile.findUnique({ where: { id: fileId } });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const row = await (prisma as any).storedFile.findUnique({ where: { id: fileId } });
     if (!row) return new NextResponse("Not found", { status: 404 });
     return new NextResponse(Buffer.from(row.data as Uint8Array), {
       headers: { "Content-Type": row.mime, "Content-Length": String(row.size) },

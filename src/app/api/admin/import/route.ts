@@ -30,15 +30,10 @@ export async function POST(request: Request) {
       try {
         const updateData: Prisma.ProductUpdateInput = { name: obj.name, image: obj.image, category: obj.category };
         const createData: Prisma.ProductCreateInput = { name: obj.name, slug: obj.slug, image: obj.image, category: obj.category };
-        if (typeof description === "string") {
-          updateData.description = description;
-          createData.description = description;
-        }
-        if (mappedImages.length) {
-          // Prisma JSON aceita array de strings como InputJsonValue
-          updateData.images = mappedImages as unknown as Prisma.InputJsonValue;
-          createData.images = mappedImages as unknown as Prisma.InputJsonValue;
-        }
+        const extraDesc = typeof description === "string" && description ? { description } : {};
+        const extraImgs = mappedImages.length ? { images: mappedImages as unknown as Prisma.InputJsonValue } : {};
+        Object.assign(updateData as unknown as object, extraDesc, extraImgs);
+        Object.assign(createData as unknown as object, extraDesc, extraImgs);
         await prisma.product.upsert({
           where: { slug: obj.slug },
           update: updateData,

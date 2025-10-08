@@ -115,7 +115,7 @@ function Tecnologia() {
     { icon: "/assets/Emergencia.svg", label: "Emergência" },
   ];
   return (
-    <section className="anchor-offset relative justify-center items-center py-18 bg-white">
+    <section className="anchor-offset relative justify-center pb-[60vw] items-center py-18 lg:py-18 bg-white">
       <div className="container gap-12 justify-center items-center flex lg:justify-start relative z-10 lg:pr-[740px] xl:pr-[840px] 2xl:pr-[900px]">
         <div className="max-w-[760px] text-center justify-center lg:text-left xl:max-w-[820px]">
           <div className="flex flex-col items-center lg:items-start justify-center">
@@ -152,7 +152,7 @@ function Tecnologia() {
       </div>
 
       <div
-        className="lg:hidden w-[80vw] h-[60vw] right-0 absolute  rounded-[185px_0_0_185px]"
+        className="lg:hidden w-[80vw] h-[58vw] right-0 absolute  rounded-[185px_0_0_185px]"
         style={{
           backgroundImage:
             "linear-gradient(220deg, rgba(255, 255, 255, 0.50) 9.01%, rgba(0, 158, 124, 0.50) 92.14%), url('/assets/img-tec.jpg')",
@@ -164,7 +164,7 @@ function Tecnologia() {
       />
       <div className="hidden lg:block absolute inset-y-0 right-0">
         <div
-          className="h-full w-[35vw] rounded-[185px_0_0_185px]"
+          className="h-[98%] w-[35vw] rounded-[185px_0_0_185px]"
           style={{
             backgroundImage:
               "linear-gradient(220deg, rgba(255, 255, 255, 0.50) 9.01%, rgba(0, 158, 124, 0.50) 92.14%), url('/assets/img-tec.jpg')",
@@ -187,7 +187,7 @@ function Produtos() {
     { icon: "/assets/Osso.svg", name: "Infiltração" },
   ];
   return (
-    <section id="produtos" className="anchor-offset mt-[60vw] lg:mt-14 py-14">
+    <section id="produtos" className="anchor-offset lg:mt-14 py-14">
       <div className="container">
         <h2 className="section-title fluid-display text-center mb-12">
           Nossa Linha de Produtos
@@ -535,7 +535,7 @@ function ProdutosDestaque() {
   return (
     <section id="convenios" className="anchor-offset bg-white pt-20 py-4">
       <div className="container text-center">
-        <h2 className="section-title fluid-display mb-3">
+        <h2 className="section-title fluid-display mb-12">
           Produtos Exclusivos, Convênios Especializados e Ampla Área de Atuação
         </h2>
         <p className="text-[#646464] max-w-5xl mx-auto mb-10">

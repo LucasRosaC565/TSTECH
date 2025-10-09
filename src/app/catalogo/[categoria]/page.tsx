@@ -3,8 +3,10 @@ import Link from "next/link";
 import { CATEGORIES, getCategory } from "@/lib/catalog";
 import { prisma } from "@/lib/prisma";
 import SearchBox from "./SearchBox";
-export const revalidate = 60;
 import WhatsAppButton from "@/app/components/WhatsAppButton";
+
+// Sempre buscar do banco a cada requisição (evita cache do SSG)
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ categoria: string }> };
 

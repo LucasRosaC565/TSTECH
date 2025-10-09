@@ -5,6 +5,9 @@ import { prisma } from "@/lib/prisma";
 
 type Props = { params: Promise<{ categoria: string; produto: string }> };
 
+// Força renderização dinâmica para refletir edições de produtos imediatamente
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   // Sem pré-render dinâmico: deixar o Next gerar sob demanda
   return [];

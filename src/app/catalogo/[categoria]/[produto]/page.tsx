@@ -75,7 +75,7 @@ export default async function ProdutoPage({ params }: Props) {
             <div>
               <h2 className="fluid-label text-[#16514B] font-bold mb-3">{product.name}</h2>
               {product.description && (
-                <p className="text-[#646464] mb-4 whitespace-pre-wrap">{product.description}</p>
+                <p className="text-[#646464] mb-4 wrap-anywhere whitespace-pre-wrap">{product.description}</p>
               )}
             
               <a className="btn-primary" href="#contato">Pedir orçamento</a>

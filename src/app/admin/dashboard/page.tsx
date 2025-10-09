@@ -6,7 +6,7 @@ import { CATEGORIES } from "@/lib/catalog";
 
 type ProductInput = { name: string; slug: string; image: string; price: string; category: string };
 type ArticleInput = { title: string; slug: string; image: string; excerpt: string; content: string };
-type ProductItem = { slug: string; name: string; image: string; category: string; images?: string[] | null };
+type ProductItem = { slug: string; name: string; image: string; category: string; images?: string[] | null; description?: string | null };
 type ArticleItem = { slug: string; title: string; image: string; excerpt: string; content: string };
 
 export default function AdminDashboard() {
@@ -74,6 +74,7 @@ export default function AdminDashboard() {
     setEditProductSlug(p.slug);
     setPForm({ name: p.name, slug: p.slug, image: p.image, price: "", category: p.category });
     setPImages(Array.isArray(p.images) ? p.images : []);
+    setPDesc(p.description || "");
   }
   async function startEditArticle(a: ArticleItem) {
     setEditArticleSlug(a.slug);

@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
+// Força renderização dinâmica para a listagem (evita cache em produção)
+export const dynamic = "force-dynamic";
+
 export default async function ArtigosPage() {
   let artigos: Array<{ slug: string; title: string; excerpt: string; image: string; date: Date }>; 
   try {

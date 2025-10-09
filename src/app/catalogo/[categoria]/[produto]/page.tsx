@@ -21,10 +21,9 @@ export default async function ProdutoPage({ params }: Props) {
   try {
     const db = await prisma.product.findUnique({
       where: { slug: produto },
-      // client types podem estar desatualizados em build, então não selecionamos description tipada aqui
-      select: { slug: true, name: true, image: true, images: true },
+      select: { slug: true, name: true, image: true, images: true, description: true },
     });
-    product = db as unknown as ProductView;
+    product = db as ProductView | null;
   } catch {
     product = null;
   }

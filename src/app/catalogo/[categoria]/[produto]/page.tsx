@@ -78,7 +78,8 @@ export default async function ProdutoPage({ params }: Props) {
                 <p className="text-[#646464] mb-4 wrap-anywhere whitespace-pre-wrap">{product.description}</p>
               )}
             
-              <a className="btn-primary" href="#contato">Pedir orçamento</a>
+              <a className="btn-primary" href="https://wa.me/5511973012833?text=Gostaria%20de%20pedir%20Or%C3%A7amento!"
+      target="_blank" >Pedir Orçamento</a>
             </div>
           </div>
         </div>

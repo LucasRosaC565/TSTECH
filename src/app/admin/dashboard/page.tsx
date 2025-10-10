@@ -478,7 +478,8 @@ function AdminProductPreview({ name, image, images, description }: { name: strin
             <p className="text-sm text-gray-400 mb-3">Escreva a descrição acima para visualizar aqui.</p>
           )}
           <div className="flex items-center gap-4 flex-wrap">
-            <a className="btn-primary cursor-default">Pedir orçamento</a>
+            <a href="https://wa.me/5511973012833?text=Gostaria%20de%20pedir%20Or%C3%A7amento!"
+      target="_blank" className=" btn-primary cursor-default">Pedir orçamento</a>
           </div>
           {images?.length ? (
             <div className="mt-4">

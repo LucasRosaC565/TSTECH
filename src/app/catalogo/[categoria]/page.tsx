@@ -80,7 +80,7 @@ export default async function CategoriaPage({ params }: Props) {
                 <div className="">
                   <Image src={p.image} alt={p.name} width={400} height={300} sizes="(min-width: 1024px) 33vw, 100vw" className="w-full h-[300px] object-contain" />
                 </div>
-                <div className="px-4 pb-4 flex items-center justify-between">
+                <div className="px-4 pb-4 mt-4 flex items-center justify-between">
                   <span className="font-bold fluid-label text-[#16514B]">{p.name}</span>
                   <span className="small underline text-[#646464]">Ver mais</span>
                 </div>

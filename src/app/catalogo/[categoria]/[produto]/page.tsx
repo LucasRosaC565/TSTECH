@@ -1,7 +1,9 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { getCategory } from "@/lib/catalog";
 import { prisma } from "@/lib/prisma";
+import ImageGallery from "@/app/components/ImageGallery";
 
 type Props = { params: Promise<{ categoria: string; produto: string }> };
 
@@ -9,9 +11,9 @@ type Props = { params: Promise<{ categoria: string; produto: string }> };
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  // Sem pré-render dinâmico: deixar o Next gerar sob demanda
   return [];
 }
+
 
 export default async function ProdutoPage({ params }: Props) {
   const { categoria, produto } = await params;
@@ -56,18 +58,10 @@ export default async function ProdutoPage({ params }: Props) {
           <div className="bg-white rounded-2xl shadow-sm border p-6 grid grid-cols-1 lg:grid-cols-[520px_1fr] gap-8">
             <div className="space-y-4">
               {Array.isArray(product.images) && product.images.length > 0 ? (
-                <div>
-                  <div className="h-[360px] rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden">
-                    <Image src={product.image} alt={product.name} width={520} height={360} sizes="(min-width: 1024px) 520px, 100vw" loading="eager" className="w-full h-full object-contain" />
-                  </div>
-                  <div className="flex gap-3 mt-3 overflow-x-auto no-scrollbar">
-                    {[product.image, ...(product.images as string[])] .map((url, idx) => (
-                      <button key={idx} className="h-16 w-24 flex-shrink-0 rounded border bg-white" onClick={(e) => { e.preventDefault(); }}>
-                        <Image src={url} alt="thumb" width={96} height={64} sizes="96px" loading="lazy" className="h-full w-full object-cover rounded" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                <ImageGallery 
+                  images={[product.image, ...(product.images as string[])]} 
+                  productName={product.name} 
+                />
               ) : (
                 <Image src={product.image} alt={product.name} width={520} height={360} sizes="(min-width: 1024px) 520px, 100vw" loading="eager" className="rounded-lg bg-gray-50 w-full object-contain" />
               )}

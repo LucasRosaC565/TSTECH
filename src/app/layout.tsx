@@ -20,6 +20,33 @@ export const metadata: Metadata = {
   title: "TS Tech & Health",
   description:
     "Soluções minimamente invasivas para cirurgias de alta tecnologia",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
+  openGraph: {
+    title: "TS Tech & Health",
+    description: "Soluções minimamente invasivas para cirurgias de alta tecnologia",
+    url: "https://www.tsmedicalgroup.com.br",
+    siteName: "TS Tech & Health",
+    images: [
+      {
+        url: "/icon.svg",
+        width: 512,
+        height: 512,
+        alt: "TS Tech & Health",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TS Tech & Health",
+    description: "Soluções minimamente invasivas para cirurgias de alta tecnologia",
+    images: ["/icon.svg"],
+  },
 };
 
 export default function RootLayout({

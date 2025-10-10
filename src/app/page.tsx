@@ -323,7 +323,7 @@ function Artigos() {
                   className="w-full h-[180px] object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-semibold fluid-label text-[#3E515B] mb-8">
+                  <h3 className="font-semibold fluid-label text-[#3E515B] mb-3">
                     {c.title}
                   </h3>
                   <p className="text-sm text-[#646464] mb-3 line-clamp-3">

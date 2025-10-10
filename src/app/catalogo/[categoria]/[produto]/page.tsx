@@ -72,8 +72,13 @@ export default async function ProdutoPage({ params }: Props) {
                 <p className="text-[#646464] mb-4 wrap-anywhere whitespace-pre-wrap">{product.description}</p>
               )}
             
-              <a className="btn-primary" href="https://wa.me/5511973012833?text=Gostaria%20de%20pedir%20Or%C3%A7amento!"
-      target="_blank" >Pedir Orçamento</a>
+              <a 
+                className="btn-primary" 
+                href={`https://wa.me/5511973012833?text=Olá, Gostaria de fazer um orçamento deste produto!%0A%0A${encodeURIComponent(product.name)}%0AURL: ${encodeURIComponent(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.tsmedicalgroup.com.br'}/catalogo/${category.slug}/${product.slug}`)}`}
+                target="_blank"
+              >
+                Pedir Orçamento
+              </a>
             </div>
           </div>
         </div>

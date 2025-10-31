@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import WhatsAppButton from "./components/WhatsAppButton";
 
-
 function Hero() {
   return (
-    <section id="inicio" className="anchor-offset relative xl:mt-32 mt-20 overflow-hidden hero-bg">
+    <section
+      id="inicio"
+      className="anchor-offset relative xl:mt-32 mt-20 overflow-hidden hero-bg"
+    >
       <div className="container grid grid-cols-1 lg:grid-cols-2 items-center gap-12 py-12 lg:py-[12vw]">
         <div className="place-self-center text-center md:text-left z-10">
           <h1 className="fluid-h2 font-bold md:max-w-full max-w-86 text-[#3E515B] mb-4">
@@ -17,6 +19,9 @@ function Hero() {
           <p className="text-[#646464] mb-8 max-w-86 md:max-w-xl">
             Equipamentos Cirúrgicos de alta qualidade para máxima precisão e
             segurança.
+            <br />
+            <br />
+            CNPJ: 40.903.550/0001-35
           </p>
           <div className="flex gap-3 justify-center md:justify-start">
             <Link href="/catalogo" className="btn-primary">
@@ -32,7 +37,10 @@ function Hero() {
 
 function Sobre() {
   return (
-    <section id="sobre" className="anchor-offset items-center flex justify-center py-20">
+    <section
+      id="sobre"
+      className="anchor-offset items-center flex justify-center py-20"
+    >
       <div className="container">
         <div className="grid grid-cols-1 place-items-center lg:place-items-start lg:grid-cols-[360px_1fr] gap-10 items-start">
           <h2 className="section-title fluid-display">
@@ -54,19 +62,19 @@ function Sobre() {
           {[
             {
               title: "Missão",
-              img: "/assets/img1-sobre.jpg",
+              img: "/assets/img1-sobre.png",
               badge: "/assets/Alvo.svg",
               text: "Fomentar a inovação com foco nos melhores resultados a pacientes e profissionais.",
             },
             {
               title: "Visão",
-              img: "/assets/img2-sobre.jpg",
+              img: "/assets/img2-sobre.png",
               badge: "/assets/Olho.svg",
               text: "Valorizar o trabalho em equipe garantindo qualidade e segurança.",
             },
             {
               title: "Valores",
-              img: "/assets/img3-sobre.jpg",
+              img: "/assets/img3-sobre.png",
               badge: "/assets/Maos.svg",
               text: "Compromisso com a excelência e melhoria contínua em nossas ações.",
             },
@@ -379,14 +387,28 @@ export default function Home() {
   }, []);
   return (
     <main className="font-sans">
-      <section className="reveal"><Hero /></section>
-      <section className="reveal"><Sobre /></section>
+      <section className="reveal">
+        <Hero />
+      </section>
+      <section className="reveal">
+        <Sobre />
+      </section>
       <TamanhoSeparador />
-      <section className="reveal"><Tecnologia /></section>
-      <section className="reveal"><Produtos /></section>
-      <section className="reveal"><Artigos /></section>
-      <section className="reveal"><ProdutosDestaque /></section>
-      <section className="reveal"><LogosMarquee /></section>
+      <section className="reveal">
+        <Tecnologia />
+      </section>
+      <section className="reveal">
+        <Produtos />
+      </section>
+      <section className="reveal">
+        <Artigos />
+      </section>
+      <section className="reveal">
+        <ProdutosDestaque />
+      </section>
+      <section className="reveal">
+        <LogosMarquee />
+      </section>
       <WhatsAppButton />
     </main>
   );
@@ -410,61 +432,31 @@ function LogosMarquee() {
     "/assets/Omint.svg",
   ];
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cloneRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const clone = cloneRef.current;
-    if (!container || !clone) return;
-
-    // Define posições iniciais
-    let offset = 0;
-    const totalWidth = container.scrollWidth;
-
-    // Função de animação contínua
-    function animate() {
-      offset -= 0.8; // velocidade (px/frame) → ajuste conforme quiser
-      if (offset <= -totalWidth) offset = 0;
-
-      container?.style.setProperty("transform", `translateX(${offset}px)`);
-clone?.style.setProperty("transform", `translateX(${offset + totalWidth}px)`);
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-  }, []);
+  const firstRow = logos.slice(0, 4);
+  const secondRow = logos.slice(4, 8);
+  const thirdRow = logos.slice(8, 10);
 
   return (
-    <section id="convenios" className="anchor-offset py-28 bg-white">
-      <div className="relative overflow-hidden w-full h-16 sm:h-20">
-        {/* Faixa principal */}
-        <div
-          ref={containerRef}
-          className="flex gap-4 items-center whitespace-nowrap will-change-transform absolute left-0 top-0"
-        >
-          {logos.map((src, idx) => (
-            <div
-              key={`logo-${idx}`}
-              className="relative inline-block h-16 sm:h-20 w-52 sm:w-64"
-            >
-              <Image src={src} alt="" fill className="object-contain" />
+    <section id="convenios" className="anchor-offset py-20 bg-white">
+      <div className="container">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
+          {firstRow.map((src, idx) => (
+            <div key={`row1-${idx}`} className="bg-[#F6F6F6] rounded-2xl shadow-sm border p-6 flex items-center justify-center aspect-square w-full">
+              <Image src={src} alt="" width={280} height={120} className="object-contain w-auto h-20 sm:h-20" />
             </div>
           ))}
         </div>
-
-        {/* Faixa clonada para continuidade */}
-        <div
-          ref={cloneRef}
-          className="flex gap-4 items-center whitespace-nowrap will-change-transform absolute left-0 top-0"
-        >
-          {logos.map((src, idx) => (
-            <div
-              key={`clone-${idx}`}
-              className="relative inline-block h-16 sm:h-20 w-52 sm:w-64"
-            >
-              <Image src={src} alt="" fill className="object-contain" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
+          {secondRow.map((src, idx) => (
+            <div key={`row2-${idx}`} className="bg-[#F6F6F6] rounded-2xl shadow-sm border flex items-center justify-center aspect-square w-full">
+              <Image src={src} alt="" width={220} height={120} className="object-contain w-auto h-20 sm:h-20" />
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-6 place-items-center max-w-3xl mx-auto">
+          {thirdRow.map((src, idx) => (
+            <div key={`row3-${idx}`} className="bg-[#F6F6F6] rounded-2xl shadow-sm border flex p-6 items-center justify-center aspect-square w-full">
+              <Image src={src} alt="" width={220} height={120} className="object-contain w-auto h-20 sm:h-20" />
             </div>
           ))}
         </div>
@@ -541,13 +533,14 @@ function ProdutosDestaque() {
         <p className="text-[#646464] max-w-5xl mx-auto mb-10">
           Oferecemos produtos exclusivos e convênios especiais para garantir
           qualidade e condições diferenciadas para você e seus pacientes.
-          Atuamos nas seguintes áreas:{" "}
+          Trabalhamos com atendimento personalizado e benefícios adaptados às
+          necessidades de cada região, assegurando o melhor para profissionais e
+          clínicas parceiras.{" "}<br/><br />
+          Atuamos nas seguintes áreas, com condições e convenções exclusivas:<br/>
           <b>
             São Paulo, Rio de Janeiro, Bahia, Pernambuco, Tocantins, Brasília e
             Espírito Santo
           </b>
-          , com convenções exclusivas para cada região, proporcionando acesso a
-          condições especiais e atendimento personalizado.
         </p>
       </div>
     </section>

@@ -77,7 +77,7 @@ export default async function ProdutoPage({ params }: Props) {
                 href={`https://wa.me/5511973012833?text=Olá, Gostaria de fazer um orçamento deste produto!%0A%0A${encodeURIComponent(product.name)}%0AURL: ${encodeURIComponent(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.tsmedicalgroup.com.br'}/catalogo/${category.slug}/${product.slug}`)}`}
                 target="_blank"
               >
-                Pedir Orçamento
+                Entrar em contato
               </a>
             </div>
           </div>

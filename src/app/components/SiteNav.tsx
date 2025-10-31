@@ -84,7 +84,7 @@ export default function SiteNav() {
         <a href="#sobre" onClick={(e) => onAnchorClick(e, "#sobre")} className={`links small text-[#646464] hover:text-[#16514B] hover:underline`}>Sobre nós</a>
         <a href="#artigos" onClick={(e) => onAnchorClick(e, "#artigos")} className={`links small text-[#646464] hover:text-[#16514B] hover:underline`}>Artigos</a>
         <a href="#convenios" onClick={(e) => onAnchorClick(e, "#convenios")} className={`links small text-[#646464] hover:text-[#16514B] hover:underline`}>Convênios</a>
-        <a href="#contato" onClick={(e) => onAnchorClick(e, "#contato")} className={`links small text-[#646464] hover:text-[#16514B] hover:underline`}>Contato</a>
+        <a href="/contato" onClick={(e) => onAnchorClick(e, "/contato")} className={`links small text-[#646464] hover:text-[#16514B] hover:underline`}>Contato</a>
         <Link href="/catalogo" data-target="#produtos" className={`links small btn-nav h-10 px-5 ${pathname.startsWith("/catalogo") ? "text-[#16514B] underline" : "text-[#646464] hover:text-[#16514B] hover:underline"}`}>Produtos</Link>
       </nav>
 
@@ -126,7 +126,7 @@ export default function SiteNav() {
           <a href="#sobre" onClick={(e) => onAnchorClick(e, "#sobre")} className={`links small text-[#3E515B] hover:text-[#16514B]`}>Sobre nós</a>
           <a href="#artigos" onClick={(e) => onAnchorClick(e, "#artigos")} className={`links small text-[#3E515B] hover:text-[#16514B]`}>Artigos</a>
           <a href="#convenios" onClick={(e) => onAnchorClick(e, "#convenios")} className={`links small text-[#3E515B] hover:text-[#16514B]`}>Convênios</a>
-          <a href="#contato" onClick={(e) => onAnchorClick(e, "#contato")} className={`links small text-[#3E515B] hover:text-[#16514B]`}>Contato</a>
+          <a href="/contato" onClick={(e) => onAnchorClick(e, "/contato")} className={`links small text-[#3E515B] hover:text-[#16514B]`}>Contato</a>
         </nav>
       </aside>
     </>

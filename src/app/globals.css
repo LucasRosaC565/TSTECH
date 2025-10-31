@@ -128,6 +128,9 @@ html, body {
   background: linear-gradient(270deg, rgba(62, 81, 91, 0.00) -2.07%, #F5F5F5 83.1%), url('/assets/bg-art.jpg') center / cover no-repeat;
 }
 
+.hero-bg-contato {
+  background: linear-gradient(270deg, rgba(62, 81, 91, 0.00) -2.07%, #F5F5F5 83.1%), url('/assets/hero-bg-contato.jpg') center / cover no-repeat;
+}
 .hero-bg-artigo {
   background: linear-gradient(270deg, rgba(62, 81, 91, 0.00) -2.07%, #F5F5F5 83.1%), url('/assets/bg-art-selecionado.jpg') center / cover no-repeat;
 }

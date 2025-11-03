@@ -13,18 +13,14 @@ export default function Contato() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const subject = encodeURIComponent("Contato pelo site");
-    const body = encodeURIComponent(
-      `Nome: ${name}\nEmpresa: ${company}\nE-mail: ${email}\nTelefone: ${phone}\n\nMensagem:\n${message}`
+    const text = encodeURIComponent(
+      `Nome: ${name}\nEmpresa: ${company}\nEmail: ${email}\nNumero: ${phone}\n\nMensagem:\n${message}`
     );
-    // Abre o e-mail padrão do usuário
-    window.location.href = `mailto:comercial@tsmediagroup.com.br?subject=${subject}&body=${body}`;
+    window.open(`https://wa.me/${whatsappNumber}?text=${text}`, "_blank");
   }
 
   const whatsappNumber = "5511973012833"; // 55 + DDD + número
-  const whatsappText = encodeURIComponent(
-    "Olá! Gostaria de falar com a TS Tech & Health pelo site."
-  );
+  
 
   return (
     <main className="font-sans">

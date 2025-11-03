@@ -442,21 +442,21 @@ function LogosMarquee() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
           {firstRow.map((src, idx) => (
             <div key={`row1-${idx}`} className="bg-[#F6F6F6] rounded-2xl shadow-sm border p-6 flex items-center justify-center aspect-square w-full">
-              <Image src={src} alt="" width={280} height={120} className="object-contain w-auto h-20 sm:h-20" />
+              <Image src={src} alt="" width={280} height={120} className="object-contain w-60 h-20 sm:h-20" />
             </div>
           ))}
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
           {secondRow.map((src, idx) => (
             <div key={`row2-${idx}`} className="bg-[#F6F6F6] rounded-2xl shadow-sm border flex items-center justify-center aspect-square w-full">
-              <Image src={src} alt="" width={220} height={120} className="object-contain w-auto h-20 sm:h-20" />
+              <Image src={src} alt="" width={220} height={120} className="object-contain w-60 h-20 sm:h-20" />
             </div>
           ))}
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-2 gap-6 place-items-center max-w-3xl mx-auto">
           {thirdRow.map((src, idx) => (
             <div key={`row3-${idx}`} className="bg-[#F6F6F6] rounded-2xl shadow-sm border flex p-6 items-center justify-center aspect-square w-full">
-              <Image src={src} alt="" width={220} height={120} className="object-contain w-auto h-20 sm:h-20" />
+              <Image src={src} alt="" width={210} height={120} className="object-contain w-60 h-20 sm:h-20" />
             </div>
           ))}
         </div>

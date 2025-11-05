@@ -38,7 +38,20 @@ export default async function ProdutoPage({ params }: Props) {
     );
   }
 
-  const relacionados: Array<{ slug: string; name: string; image: string; price: string | null }> = [];
+  let relacionados: Array<{ slug: string; name: string; image: string }> = [];
+  try {
+    relacionados = await prisma.product.findMany({
+      where: { 
+        category: categoria,
+        slug: { not: produto }
+      },
+      orderBy: { createdAt: "desc" },
+      take: 4,
+      select: { slug: true, name: true, image: true },
+    });
+  } catch {
+    relacionados = [];
+  }
 
   return (
     <main>
@@ -59,7 +72,10 @@ export default async function ProdutoPage({ params }: Props) {
             <div className="space-y-4">
               {Array.isArray(product.images) && product.images.length > 0 ? (
                 <ImageGallery 
-                  images={[product.image, ...(product.images as string[])]} 
+                  images={[
+                    product.image,
+                    ...(product.images as string[]).filter(img => img !== product.image)
+                  ].filter((url, idx, arr) => arr.indexOf(url) === idx)} 
                   productName={product.name} 
                 />
               ) : (
@@ -83,24 +99,26 @@ export default async function ProdutoPage({ params }: Props) {
           </div>
         </div>
       </section>
-      <section className="pb-14">
-        <div className="container">
-          <h3 className="font-semibold text-[#3E515B] mb-4">Produtos relacionados</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relacionados.map((p) => (
-              <Link key={p.slug} href={`/catalogo/${category.slug}/${p.slug}`} className="bg-white rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                <div className="p-4">
-                  <Image src={p.image} alt={p.name} width={400} height={300} className="w-full h-[160px] object-contain" />
-                </div>
-                <div className="px-4 pb-4 flex items-center justify-between">
-                  <span className="font-semibold text-sm text-gray-800">{p.name}</span>
-                  <span className="text-xs text-gray-500">Ver mais</span>
-                </div>
-              </Link>
-            ))}
+      {relacionados.length > 0 && (
+        <section className="pb-14">
+          <div className="container">
+            <h3 className="font-semibold text-[#3E515B] mb-4">Produtos relacionados</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relacionados.map((p) => (
+                <Link key={p.slug} href={`/catalogo/${category.slug}/${p.slug}`} className="bg-white rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                  <div className="p-4">
+                    <Image src={p.image} alt={p.name} width={400} height={300} className="w-full h-[160px] object-contain" />
+                  </div>
+                  <div className="px-4 pb-4 flex items-center justify-between">
+                    <span className="font-semibold text-sm text-gray-800">{p.name}</span>
+                    <span className="text-xs text-gray-500">Ver mais</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   );
 }

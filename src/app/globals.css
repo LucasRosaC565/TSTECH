@@ -85,7 +85,7 @@ html, body {
     url('/assets/bg-hero-mob.jpg') center calc(100% - 120px) / cover no-repeat;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .hero-bg-mob {
     background:
       linear-gradient(

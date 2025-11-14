@@ -9,9 +9,9 @@ function Hero() {
   return (
     <section
       id="inicio"
-      className="anchor-offset relative xl:mt-32 mt-20 overflow-hidden hero-bg"
+      className="anchor-offset relative xl:mt-32 mt-20 overflow-hidden pt-96 md:pt-0 hero-bg-mob"
     >
-      <div className="container grid grid-cols-1 lg:grid-cols-2 items-center gap-12 py-12 lg:py-[12vw]">
+      <div className="container grid grid-cols-1 lg:grid-cols-2 items-center gap-12 md:py-24 lg:py-[12vw]">
         <div className="place-self-center text-center md:text-left z-10">
           <h1 className="fluid-h2 font-bold md:max-w-full max-w-86 text-[#3E515B] mb-4">
             Soluções Minimamente Invasivas para Cirurgias de Alta Tecnologia
@@ -123,7 +123,7 @@ function Tecnologia() {
     { icon: "/assets/Emergencia.svg", label: "Emergência" },
   ];
   return (
-    <section className="anchor-offset relative justify-center pb-[60vw] items-center py-18 lg:py-18 bg-white">
+    <section className="anchor-offset relative justify-center items-center py-18 lg:py-18 bg-white">
       <div className="container gap-12 justify-center items-center flex lg:justify-start relative z-10 lg:pr-[740px] xl:pr-[840px] 2xl:pr-[900px]">
         <div className="max-w-[760px] text-center justify-center lg:text-left xl:max-w-[820px]">
           <div className="flex flex-col items-center lg:items-start justify-center">
@@ -160,7 +160,7 @@ function Tecnologia() {
       </div>
 
       <div
-        className="lg:hidden w-[80vw] h-[58vw] right-0 absolute  rounded-[185px_0_0_185px]"
+        className="lg:hidden w-full h-[60vw]"
         style={{
           backgroundImage:
             "linear-gradient(220deg, rgba(255, 255, 255, 0.50) 9.01%, rgba(0, 158, 124, 0.50) 92.14%), url('/assets/img-tec.jpg')",

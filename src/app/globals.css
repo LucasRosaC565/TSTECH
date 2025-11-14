@@ -78,13 +78,22 @@ html, body {
 }
 
 /* Hero background responsivo: mobile/tablet usam cover; desktop mantém posição original */
-.hero-bg {
-  background: linear-gradient(270deg, rgba(237, 237, 237, 0) -2.08%, #F5F5F5 90%), url('/assets/bg-hero.jpg') center / cover no-repeat;
+
+.hero-bg-mob {
+  background:
+    linear-gradient(179deg, rgba(237, 237, 237, 0) 20.08%, #F5F5F5 70%),
+    url('/assets/bg-hero-mob.jpg') center calc(100% - 120px) / cover no-repeat;
 }
 
 @media (min-width: 1024px) {
-  .hero-bg {
-    background: linear-gradient(270deg, rgba(237, 237, 237, 0.00) -2.08%, #F5F5F5 86.94%), url('/assets/bg-hero.jpg') lightgray 222.161px -174.299px / 100% 160.02% center / cover no-repeat;
+  .hero-bg-mob {
+    background:
+      linear-gradient(
+        270deg,
+        rgba(237, 237, 237, 0) -2.08%,
+        #F5F5F5 86.94%
+      ),
+      url('/assets/bg-hero.jpg') center / cover no-repeat;
   }
 }
 

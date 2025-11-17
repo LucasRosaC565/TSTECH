@@ -160,7 +160,7 @@ function Tecnologia() {
       </div>
 
       <div
-        className="lg:hidden w-full h-[60vw]"
+        className="lg:hidden w-full h-[100vw]"
         style={{
           backgroundImage:
             "linear-gradient(220deg, rgba(255, 255, 255, 0.50) 9.01%, rgba(0, 158, 124, 0.50) 92.14%), url('/assets/img-tec.jpg')",

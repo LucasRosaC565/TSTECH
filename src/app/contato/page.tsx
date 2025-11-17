@@ -25,10 +25,10 @@ export default function Contato() {
   return (
     <main className="font-sans">
       
-      <section className="hero-bg-contato xl:mt-32 mt-20 h-[28vw] min-h-[280px] flex items-center">
+      <section className="hero-bg-contato xl:mt-32 mt-20 h-[30vw] md:h-[22vw] sm:h-[60vw] min-h-[280px] flex items-end">
         <div className="container py-8">
           <h1 className="fluid-h2 font-bold text-[#3E515B]">Entre em contato conosco</h1>
-          <p className="text-[#646464] mt-10 max-w-xl">
+          <p className="text-[#646464] fluid-body mt-10 max-w-xl">
             Nossa equipe está pronta para atender você com agilidade e
             garantir a melhor experiência possível.
           </p>
@@ -43,7 +43,7 @@ export default function Contato() {
             <h2 className="section-title text-nowrap text-[#3E515B] fluid-display mb-8">
               Formulário de Contato
             </h2>
-            <p className="text-[#646464] small-tec mb-8 min-w-xl max-w-3xl">
+            <p className="text-[#646464] small mb-8 max-w-3xl">
               Preencha os campos abaixo e envie sua mensagem. Nosso time entrará
               em contato em breve para oferecer o suporte que você precisa.
             </p>
@@ -95,14 +95,14 @@ export default function Contato() {
           </div>
 
           {/* Informações de contato */}
-          <div className="small-tec">
+          <div className="small">
             <h2 className="section-title text-[#3E515B] fluid-display mb-4">Fale com a gente</h2>
-            <p className="text-[#646464] small-tec mb-8 max-w-xl">
+            <p className="text-[#646464] small mb-8 max-w-xl">
               Entre em contato conosco pelos dados abaixo ou através do
               formulário.
             </p>
 
-            <div className="flex flex-col small-tec md:justify-start gap-2">
+            <div className="flex flex-col small md:justify-start gap-2">
                 <div className="flex gap-2">
                 <Image src="/assets/Zap.png" alt="Whatsapp" width={16} height={16} className="w-5 h-5" />
                 <span className=" text-black">
@@ -117,10 +117,10 @@ export default function Contato() {
                 </div>
                 </div>
 
-            <div className="mt-8 small-tec">
-              <h3 className="font-semibold small-tec text-[#16514B] mb-2">Endereço</h3>
-              <p className="small-tec text-[#646464]">
-                Rua Alvarenga, 249 – Sala 03
+            <div className="mt-8 small">
+              <h3 className="font-semibold small text-[#16514B] mb-2">Endereço</h3>
+              <p className="small text-[#646464]">
+               Rua Afonsina, 248 – Sala 03
                 <br />
                 Rudge Ramos, São Bernardo do Campo – SP
                 <br />

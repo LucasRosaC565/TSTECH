@@ -215,7 +215,7 @@ export default function AdminDashboard() {
                 <option key={c.slug} value={c.slug}>{c.name}</option>
               ))}
             </select>
-            <textarea className="input sm:col-span-2 min-h-28" placeholder="Descrição do produto (como aparecerá na página). Use quebras de linha para separar parágrafos." value={pDesc} onChange={(e) => setPDesc(e.target.value)} />
+            <textarea className="input sm:col-span-2 min-h-28" placeholder={"Descrição:\n- Parágrafos: separe com linha em branco (\\n\\n)\n- Negrito: **texto**\n- Itálico: *texto*\n- Subtítulo: ## Meu subtítulo\n- Título secundário: # Título\n- Lista: cada linha iniciando com '- '"} value={pDesc} onChange={(e) => setPDesc(e.target.value)} />
             <div className="sm:col-span-2">
               <span className="text-xs text-gray-600">Pré-visualização</span>
               <div className="mt-2">
@@ -396,7 +396,7 @@ function BulkImport({ title, type, templatePath, description }: { title: string;
           <div>- <code>slug</code>: Identificador único (geralmente automático do nome, em minúsculas e hífens).</div>
           <div>- <code>image</code>: URL completa ou nome do arquivo da imagem principal (se enviar no campo abaixo).</div>
           <div>- <code>category</code>: slug da categoria (ex.: ortopedia, infiltracao, coluna-vertebral, neurocirurgia).</div>
-          <div>- <code>description</code>: Texto descritivo (pode usar quebras de linha \n\n; no CSV, evite vírgulas ou envolva em aspas).</div>
+          <div>- <code>description</code>: Texto descritivo. Separe parágrafos com linha em branco (\n\n). Suporta <code>**negrito**</code>, <code>*itálico*</code>, <code>## Subtítulo</code>, <code># Título</code> e listas com linhas iniciadas por <code>- </code>. No CSV, evite vírgulas ou envolva em aspas.</div>
           <div>- <code>images</code>: Lista de imagens extras separadas por ponto e vírgula <code>;</code> (ex.: <code>foto1.jpg;foto2.jpg</code>).</div>
           <div className="mt-2"><strong>Importando imagens:</strong> Anexe os arquivos em “Selecionar imagens (múltiplas)”. Os nomes devem corresponder aos informados nas colunas <code>image</code> e/ou <code>images</code>. Se usar URL (http/https), não precisa anexar o arquivo.</div>
           <div className="text-[11px] text-gray-600 mt-1">Limite por imagem: 4MB. Formatos recomendados: JPG/PNG. Use nomes sem espaços/acentos (ex.: <code>foto_01.jpg</code>).</div>
@@ -471,9 +471,7 @@ function AdminProductPreview({ name, image, images, description }: { name: strin
         <div className="min-w-0">
           <h2 className="text-2xl font-bold mb-3 text-[#3E515B] break-words">{name || "(Nome do produto)"}</h2>
           {description ? (
-            description.split(/\n+/).map((p, i) => (
-              <p key={i} className="text-gray-700 mb-3 leading-7 break-words whitespace-pre-wrap">{p}</p>
-            ))
+            <ProductDescriptionBody content={description} />
           ) : (
             <p className="text-sm text-gray-400 mb-3">Escreva a descrição acima para visualizar aqui.</p>
           )}
@@ -522,6 +520,55 @@ function AdminArticlePreview({ title, excerpt, content }: { title: string; excer
       </div>
     </div>
   );
+}
+
+function ProductDescriptionBody({ content }: { content: string }) {
+  const blocks = (content || "").split(/\n\n+/);
+
+  function esc(s: string) {
+    return s
+      .replaceAll(/&/g, "&amp;")
+      .replaceAll(/</g, "&lt;")
+      .replaceAll(/>/g, "&gt;")
+      .replaceAll(/"/g, "&quot;")
+      .replaceAll(/'/g, "&#039;");
+  }
+  function inline(t: string) {
+    const a = esc(t);
+    const b = a.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    const c = b.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    return c;
+  }
+
+  const elements: React.ReactNode[] = [];
+  for (const raw of blocks) {
+    const block = raw.trim();
+    if (!block) continue;
+    const h3 = block.match(/^##\s+(.+)/);
+    if (h3) {
+      elements.push(<h3 key={`h3-${elements.length}`} className="font-semibold text-[#3E515B] mb-2" dangerouslySetInnerHTML={{ __html: inline(h3[1]) }} />);
+      continue;
+    }
+    const h2 = block.match(/^#\s+(.+)/);
+    if (h2) {
+      elements.push(<h2 key={`h2-${elements.length}`} className="font-bold text-[#3E515B] mb-2" dangerouslySetInnerHTML={{ __html: inline(h2[1]) }} />);
+      continue;
+    }
+    const lines = block.split(/\n/);
+    if (lines.every((l) => l.trim().startsWith("- "))) {
+      elements.push(
+        <ul key={`ul-${elements.length}`} className="list-disc pl-6 text-[#646464] mb-3 leading-7">
+          {lines.map((l, i) => <li key={i} dangerouslySetInnerHTML={{ __html: inline(l.replace(/^\-\s+/, "")) }} />)}
+        </ul>
+      );
+      continue;
+    }
+    elements.push(<p key={`p-${elements.length}`} className="text-[#646464] mb-3 leading-7" dangerouslySetInnerHTML={{ __html: inline(block) }} />);
+  }
+  if (!elements.length) {
+    elements.push(<p key="empty" className="text-xs text-gray-500">Escreva a descrição do produto para visualizar aqui.</p>);
+  }
+  return <div>{elements}</div>;
 }
 
 function ArticleBodyInline({ content }: { content: string }) {

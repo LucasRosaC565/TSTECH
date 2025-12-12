@@ -85,7 +85,7 @@ export default async function ProdutoPage({ params }: Props) {
             <div>
               <h2 className="fluid-label text-[#16514B] font-bold mb-3">{product.name}</h2>
               {product.description && (
-                <p className="text-[#646464] mb-4 wrap-anywhere whitespace-pre-wrap">{product.description}</p>
+                <ProductDescription content={product.description} />
               )}
             
               <a 
@@ -121,6 +121,91 @@ export default async function ProdutoPage({ params }: Props) {
       )}
     </main>
   );
+}
+
+function ProductDescription({ content }: { content: string }) {
+  const blocks = (content || "").split(/\n\n+/);
+
+  function escapeHtml(s: string) {
+    return s
+      .replaceAll(/&/g, "&amp;")
+      .replaceAll(/</g, "&lt;")
+      .replaceAll(/>/g, "&gt;")
+      .replaceAll(/"/g, "&quot;")
+      .replaceAll(/'/g, "&#039;");
+  }
+
+  function inline(md: string) {
+    const esc = escapeHtml(md);
+    // negrito **texto**
+    const bold = esc.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    // itálico *texto*
+    const italic = bold.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    return italic;
+  }
+
+  const elements: JSX.Element[] = [];
+  let listOpen = false;
+  let listItems: string[] = [];
+
+  function flushList() {
+    if (listOpen && listItems.length) {
+      elements.push(
+        <ul key={`ul-${elements.length}`} className="list-disc pl-6 text-[#646464] mb-4 leading-7">
+          {listItems.map((li, idx) => (
+            <li key={idx} dangerouslySetInnerHTML={{ __html: inline(li) }} />
+          ))}
+        </ul>
+      );
+    }
+    listOpen = false;
+    listItems = [];
+  }
+
+  for (const raw of blocks) {
+    const block = raw.trim();
+    if (!block) continue;
+
+    // listas: linhas iniciando com "- "
+    const lines = block.split(/\n/);
+    if (lines.every((l) => l.trim().startsWith("- "))) {
+      listOpen = true;
+      listItems.push(
+        ...lines.map((l) => l.replace(/^\-\s+/, "").trim())
+      );
+      flushList();
+      continue;
+    }
+
+    flushList();
+
+    // subtítulo: ## Título
+    const h3 = block.match(/^##\s+(.+)/);
+    if (h3) {
+      elements.push(
+        <h3 key={`h3-${elements.length}`} className="font-semibold text-[#3E515B] mb-3" dangerouslySetInnerHTML={{ __html: inline(h3[1]) }} />
+      );
+      continue;
+    }
+
+    // título secundário maior: # Título
+    const h2 = block.match(/^#\s+(.+)/);
+    if (h2) {
+      elements.push(
+        <h2 key={`h2-${elements.length}`} className="font-bold text-[#3E515B] mb-3" dangerouslySetInnerHTML={{ __html: inline(h2[1]) }} />
+      );
+      continue;
+    }
+
+    // parágrafo padrão com inline (negrito/itálico)
+    elements.push(
+      <p key={`p-${elements.length}`} className="text-[#646464] mb-4 leading-7 wrap-anywhere" dangerouslySetInnerHTML={{ __html: inline(block) }} />
+    );
+  }
+
+  flushList();
+
+  return <div>{elements}</div>;
 }
 
 

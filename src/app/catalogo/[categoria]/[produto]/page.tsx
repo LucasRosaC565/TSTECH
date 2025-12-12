@@ -1,6 +1,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type React from "react";
 import { getCategory } from "@/lib/catalog";
 import { prisma } from "@/lib/prisma";
 import ImageGallery from "@/app/components/ImageGallery";
@@ -144,7 +145,7 @@ function ProductDescription({ content }: { content: string }) {
     return italic;
   }
 
-  const elements: JSX.Element[] = [];
+  const elements: React.ReactElement[] = [];
   let listOpen = false;
   let listItems: string[] = [];
 

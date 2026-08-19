@@ -10,9 +10,11 @@ export default function Contato() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [consent, setConsent] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!consent) return;
     const text = encodeURIComponent(
       `Nome: ${name}\nEmpresa: ${company}\nEmail: ${email}\nNumero: ${phone}\n\nMensagem:\n${message}`
     );
@@ -86,8 +88,33 @@ export default function Contato() {
                 onChange={(e) => setMessage(e.target.value)}
                 required
               />
+              <label className="flex items-start gap-3 text-[#646464] small">
+                <input
+                  type="checkbox"
+                  className="mt-1 h-4 w-4 accent-[#16514B]"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  required
+                />
+                <span>
+                  Autorizo o tratamento dos meus dados pessoais pela TS Tech
+                  &amp; Health para que entrem em contato comigo, nos termos da{" "}
+                  <Link
+                    href="/politica-de-privacidade"
+                    className="text-[#16514B] underline"
+                  >
+                    Política de Privacidade
+                  </Link>{" "}
+                  e da LGPD (Lei nº 13.709/2018). Ao enviar, sua mensagem será
+                  aberta no WhatsApp.
+                </span>
+              </label>
               <div className="flex gap-3">
-                <button type="submit" className="w-full btn-primary">
+                <button
+                  type="submit"
+                  disabled={!consent}
+                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   Enviar
                 </button>
               </div>

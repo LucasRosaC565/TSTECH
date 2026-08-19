@@ -171,7 +171,15 @@ export default function RootLayout({
             </div>
           </div>
           <div className="text-center small text-black pb-6">
-            Copyright 2025 © TS Tech & Health – Todos os direitos reservados
+            <Link
+              href="/politica-de-privacidade"
+              className="text-[#16514B] hover:underline"
+            >
+              Política de Privacidade (LGPD)
+            </Link>
+            <div className="mt-2">
+              Copyright 2025 © TS Tech & Health – Todos os direitos reservados
+            </div>
           </div>
         </footer>
       </body>

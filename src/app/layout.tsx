@@ -3,6 +3,7 @@ import { Poppins, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import SiteNav from "./components/SiteNav";
+import CookieConsent from "./components/CookieConsent";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -182,6 +183,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        <CookieConsent />
       </body>
     </html>
   );

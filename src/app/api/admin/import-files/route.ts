@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { requireAdminSession } from "@/lib/admin-guard";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export async function POST(request: Request) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
   if (!type) return new NextResponse("Parâmetros ausentes", { status: 400 });

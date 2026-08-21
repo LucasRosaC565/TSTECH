@@ -1,16 +1,26 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (!pathname.startsWith("/admin")) {
+  // O login precisa ficar acessível sem sessão.
+  if (pathname === "/api/admin/login") {
     return NextResponse.next();
   }
 
+  const token = request.cookies.get(SESSION_COOKIE)?.value;
+  const isAuthenticated = Boolean(await verifySessionToken(token));
+
+  // Rotas de API respondem 401 em vez de redirecionar.
+  if (pathname.startsWith("/api/admin")) {
+    return isAuthenticated
+      ? NextResponse.next()
+      : NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+  }
+
   const isLoginPage = pathname === "/admin";
-  const cookie = request.cookies.get("admin_auth");
-  const isAuthenticated = cookie && cookie.value === "authenticated";
 
   if (isLoginPage) {
     if (isAuthenticated) {
@@ -31,7 +41,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
-
-

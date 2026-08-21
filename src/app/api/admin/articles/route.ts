@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
+import { requireAdminSession } from "@/lib/admin-guard";
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(_req: Request) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   try {
     const items = await prisma.article.findMany({ orderBy: { date: "desc" } });
     return NextResponse.json({ items });
@@ -11,6 +15,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   const body = await req.json();
   const { title, slug, image, excerpt, content } = body || {};
   if (!title || !slug || !image || !excerpt || !content) return new NextResponse("Campos obrigatórios ausentes", { status: 400 });

@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
+import { requireAdminSession } from "@/lib/admin-guard";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 
 // Espera CSV em texto puro no body. Query param type=products|articles
 export async function POST(request: Request) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
   const text = await request.text();

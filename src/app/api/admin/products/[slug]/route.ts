@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { requireAdminSession } from "@/lib/admin-guard";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 
 type Params = { params: Promise<{ slug: string }> };
 
 export async function GET(_: Request, { params }: Params) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   const { slug } = await params;
   const item = await prisma.product.findUnique({ where: { slug } });
   if (!item) return new NextResponse("Not found", { status: 404 });
@@ -12,6 +16,9 @@ export async function GET(_: Request, { params }: Params) {
 }
 
 export async function PUT(req: Request, { params }: Params) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   const { slug } = await params;
   const body = await req.json();
   const { name, image, images, description, category, newSlug } = body || {};
@@ -38,6 +45,9 @@ export async function PUT(req: Request, { params }: Params) {
 }
 
 export async function DELETE(_: Request, { params }: Params) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   const { slug } = await params;
   try {
     await prisma.product.delete({ where: { slug } });

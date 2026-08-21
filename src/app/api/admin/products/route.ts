@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
+import { requireAdminSession } from "@/lib/admin-guard";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 
-export async function GET() {
+export async function GET(_req: Request) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   try {
     const items = await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
     return NextResponse.json({ items });
@@ -13,6 +17,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const denied = await requireAdminSession();
+  if (denied) return denied;
+
   const body = await req.json();
   const { name, slug, image, images, description, category } = body || {};
   if (!name || !slug || !image || !category) return new NextResponse("Campos obrigatórios ausentes", { status: 400 });
